@@ -224,10 +224,9 @@
                         Rp {{ number_format($p->price, 0, ',', '.') }}
                     </div>
 
-                    <a href="https://wa.me/62895321683364?text=Saya mau {{ urlencode($p->name) }}"
-                        class="btn" target="_blank">
-                        Pesan Sekarang
-                    </a>
+                    <a href="{{ url('/product/' . $p->id) }}" class="btn">
+                        Lihat Detail Produk
+                        </a>
 
                 </div>
 

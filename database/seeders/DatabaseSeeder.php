@@ -2,8 +2,13 @@
 
 namespace Database\Seeders;
 
+<<<<<<< HEAD
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+=======
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+>>>>>>> de47746c6e5b2cd894a378a9413bfb59c3b8d1a9
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,6 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+<<<<<<< HEAD
         // 1. Masukkan data ke tabel categories
         DB::table('categories')->insert([
             [
@@ -177,3 +183,13 @@ class DatabaseSeeder extends Seeder
         ]);
     }
 }
+=======
+        // \App\Models\User::factory(10)->create();
+
+        // \App\Models\User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
+    }
+}
+>>>>>>> de47746c6e5b2cd894a378a9413bfb59c3b8d1a9

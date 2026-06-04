@@ -15,8 +15,3 @@ Route::get('/product/{id}', [ProductController::class, 'show']);
 Route::get('/cek-db', function () {
     return \Illuminate\Support\Facades\DB::table('products')->get();
 });
-
-// Ubah dari 'products' menjadi 'categories' untuk sementara
-Route::get('/cek-db', function () {
-    return \Illuminate\Support\Facades\DB::table('categories')->get();
-});
