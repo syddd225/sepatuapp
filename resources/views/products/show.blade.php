@@ -303,9 +303,6 @@
                 <a href="javascript:history.back()" class="btn btn-outline">
                     Kembali
                 </a>
-            </div>
-        </div>
-
     </div>
 
     <script>

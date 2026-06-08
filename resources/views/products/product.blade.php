@@ -4,9 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Shoe Showcase</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -59,10 +57,8 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-
-            background:
-                linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
-                url('/image/bg.jpg.jpeg') center/cover;
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
+                        url('/image/bg.jpg.jpeg') center/cover;
         }
 
         .hero h1 {
@@ -116,7 +112,7 @@
             object-fit: cover;
         }
 
-        /* BODY */
+        /* BODY CARD */
         .card-body {
             padding: 18px;
         }
@@ -165,6 +161,16 @@
             background: #a8855a;
         }
 
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 25px;
+            background-color: #111;
+            color: #888;
+            font-size: 14px;
+            margin-top: 50px;
+        }
+
         /* RESPONSIVE */
         @media(max-width: 768px) {
             .navbar {
@@ -180,10 +186,8 @@
 
 <body>
 
-    <!-- NAVBAR -->
     <div class="navbar">
         <h2>👟 Retro Collection</h2>
-
         <div class="nav-links">
             <a href="/">Home</a>
             <a href="/category/1">Formal</a>
@@ -192,7 +196,6 @@
         </div>
     </div>
 
-    <!-- HERO -->
     <div class="hero">
         <div>
             <h1>{{ $products[0]->category->name ?? 'Retro Collection' }}</h1>
@@ -200,41 +203,31 @@
         </div>
     </div>
 
-    <!-- PRODUCT -->
     <div class="section">
-
         <h2>{{ $products[0]->category->name ?? 'Produk' }} Collection</h2>
 
         <div class="grid">
-
             @foreach($products as $p)
             <div class="card">
-
                 <img src="/image/{{ $p->image }}" alt="{{ $p->name }}">
-
                 <div class="card-body">
-
                     <div class="material">
                         {{ $p->description }}
                     </div>
-
                     <div class="name">{{ $p->name }}</div>
-
                     <div class="price">
                         Rp {{ number_format($p->price, 0, ',', '.') }}
                     </div>
-
                     <a href="{{ url('/product/' . $p->id) }}" class="btn">
                         Lihat Detail Produk
-                        </a>
-
+                    </a>
                 </div>
-
             </div>
             @endforeach
-
         </div>
-
+        </div>
+    <div class="footer">
+        &copy; 2026 Retro Collection. All rights reserved.
     </div>
 
 </body>
