@@ -209,7 +209,22 @@
         <div class="grid">
             @foreach($products as $p)
             <div class="card">
-                <img src="/image/{{ $p->image }}" alt="{{ $p->name }}">
+                @php
+                    $imagePath = public_path('image/' . $p->image);
+                    $imageExists = file_exists($imagePath) && !empty($p->image);
+                @endphp
+                
+                @if($imageExists)
+                    <img src="/image/{{ $p->image }}" alt="{{ $p->name }}">
+                @else
+                    <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #1E1E1E 0%, #2a2a2a 100%); display: flex; align-items: center; justify-content: center; color: #C19A6B; font-size: 14px; text-align: center; padding: 20px;">
+                        <div>
+                            <div style="font-size: 40px; margin-bottom: 10px;">👟</div>
+                            <div>Foto tidak tersedia</div>
+                        </div>
+                    </div>
+                @endif
+                
                 <div class="card-body">
                     <div class="material">
                         {{ $p->description }}
