@@ -156,6 +156,7 @@
             background: #C19A6B;
         }
 
+
         /* ABOUT / FILOSOFI SECTION */
         .about-section {
             background-color: #1E1E1E;
@@ -353,6 +354,28 @@
             <a href="#kontak">Kontak</a>
         </div>
     </div>
+
+    <div class="navbar">
+        <h2>👟 Retro Collection</h2>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="#kategori">Kategori</a>
+            <a href="#tentang-kami">Tentang Kami</a>
+            <a href="#kontak">Kontak</a>
+        </div>
+    </div>
+
+    <div class="navbar">
+        @auth
+            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color: #ef5350;">Logout ({{ auth()->user()->name }})</a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+        @else
+            <a href="/login" style="background: #C19A6B; color: #1E1E1E; padding: 8px 15px; border-radius: 6px; font-weight: 600;">Masuk / Daftar</a>
+        @endauth
+    </div>
+</div>
 
     <!-- HERO -->
     <div class="hero">

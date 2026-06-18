@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Auth\LoginController;
 
 /**
  * Product Showcase Routes
@@ -26,6 +28,31 @@ Route::get('/cek-db', function () {
     return \Illuminate\Support\Facades\DB::table('products')->get();
 });
 
+
+/**
+ * =============================================================
+ * USER / CUSTOMER AUTHENTICATION ROUTES (TAMBAHAN BARU)
+ * =============================================================
+ */
+
+// 1. Menampilkan halaman Form Login & Register Pembeli
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+// 2. Memproses Data Login Pembeli saat tombol "Masuk Sekarang" diklik
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+
+// 3. Memproses Data Registrasi Pembeli saat tombol "Buat Akun & Join" diklik
+Route::post('/register', [LoginController::class, 'register'])->name('register');
+
+// 4. Memproses Logout Pembeli
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// 5. Halaman Checkout (Hanya bisa diakses jika pembeli sudah login)
+Route::get('/checkout/{id}', [CheckoutController::class, 'index'])->middleware('auth');
+
+
 /**
  * Admin Panel Routes
  * CRUD operations untuk product management
@@ -33,11 +60,11 @@ Route::get('/cek-db', function () {
  */
 
 Route::prefix('admin')->name('admin.')->group(function () {
-    // Login Routes (tidak perlu auth)
+    // Login Routes Admin (URL: localhost:8000/admin/login)
     Route::get('/login', [AdminController::class, 'loginForm'])->name('login');
     Route::post('/login', [AdminController::class, 'login'])->name('login.submit');
 
-    // Protected Routes (memerlukan auth)
+    // Protected Routes Admin (memerlukan auth admin)
     Route::middleware('web')->group(function () {
         // Dashboard
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
@@ -52,7 +79,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Search
         Route::get('/search', [AdminController::class, 'search'])->name('search');
         
-        // Logout
+        // Logout Admin
         Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
     });
 });

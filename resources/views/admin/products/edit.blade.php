@@ -142,51 +142,63 @@
 
             <!-- Bahan/Material -->
             <div class="form-group">
-                <label for="materials">Bahan (pisahkan dengan koma)</label>
-                <textarea 
-                    id="materials" 
-                    name="materials" 
-                    placeholder="Contoh: Kulit Asli, Sol Karet Alami, Flock Lining"
-                    style="min-height: 100px;"
-                >{{ old('materials', is_array($product->materials) ? implode(', ', $product->materials) : '') }}</textarea>
-                @error('materials')
-                    <div class="error-messages">
-                        <li>{{ $message }}</li>
-                    </div>
-                @enderror
-                <small>Daftar bahan yang digunakan, pisahkan setiap bahan dengan koma</small>
-            </div>
+    <label for="materials">Bahan (pisahkan dengan koma)</label>
+    <textarea 
+        id="materials" 
+        name="materials" 
+        placeholder="Contoh: Kulit Asli, Sol Karet Alami, Flock Lining"
+        style="min-height: 100px;"
+    >{{ old('materials', @implode(', ', (array)$product->materials) ?: $product->materials) }}</textarea>
+    @error('materials')
+        <div class="error-messages">
+            <li>{{ $message }}</li>
+        </div>
+    @enderror
+    <small>Daftar bahan yang digunakan, pisahkan setiap bahan dengan koma</small>
+</div>
 
-            <!-- Filosofi -->
             <div class="form-group">
                 <label for="philosophy">Filosofi Produk</label>
                 <textarea 
                     id="philosophy" 
                     name="philosophy" 
                     placeholder="Cerita dibalik produk ini, nilai-nilai yang diwakili, dll..."
-                >{{ old('philosophy', $product->philosophy) }}</textarea>
-                @error('philosophy')
-                    <div class="error-messages">
-                        <li>{{ $message }}</li>
-                    </div>
+                    >{{ old('philosophy', $product->philosophy) }}</textarea>
+                    @error('philosophy')
+                <div class="error-messages">
+                <li>{{ $message }}</li>
+            </div>
                 @enderror
                 <small>Cerita unik dan filosofi produk untuk membuat pembeli terhubung emosional</small>
             </div>
 
-            <!-- Foto Sudut Lain -->
-            <div class="form-group">
-                <label for="images_angles">Nama File Foto Sudut Lain (pisahkan dengan koma)</label>
-                <textarea 
-                    id="images_angles" 
-                    name="images_angles" 
-                    placeholder="Contoh: formal-black-side.jpg, formal-black-top.jpg, formal-black-sole.jpg"
-                    style="min-height: 100px;"
-                >{{ old('images_angles', is_array($product->images_angles) ? implode(', ', $product->images_angles) : '') }}</textarea>
-                @error('images_angles')
+        <div class="form-group">
+        <label for="images_angles">Nama File Foto Sudut Lain (pisahkan dengan koma)</label>
+        @php
+            // Mengamankan data images_angles apa pun bentuknya
+            $anglesValue = old('images_angles');
+            if (is_null($anglesValue)) {
+                if (is_array($product->images_angles)) {
+                    $anglesValue = implode(', ', $product->images_angles);
+                } elseif (is_string($product->images_angles)) {
+                    $decodedAngles = json_decode($product->images_angles, true);
+                    $anglesValue = is_array($decodedAngles) ? implode(', ', $decodedAngles) : $product->images_angles;
+                } else {
+                    $anglesValue = '';
+                }
+            }
+            @endphp
+            <textarea 
+                id="images_angles" 
+                name="images_angles" 
+                placeholder="Contoh: formal-black-side.jpg, formal-black-top.jpg, formal-black-sole.jpg"
+                style="min-height: 100px;"
+            >{{ $anglesValue }}</textarea>
+            @error('images_angles')
                     <div class="error-messages">
                         <li>{{ $message }}</li>
                     </div>
-                @enderror
+            @enderror
                 <small>Nama file foto dari sudut lain (harus sudah ada di folder /public/image). Pisahkan dengan koma.</small>
             </div>
 
