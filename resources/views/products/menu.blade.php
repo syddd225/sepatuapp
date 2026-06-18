@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro Collection - Beranda</title>
+    <title>Retro Collection - Etalase Pengrajin Lokal</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -19,7 +19,6 @@
             font-family: 'Inter', sans-serif;
             background-color: #F5F5F5;
             color: #333;
-            /* Scroll smooth saat menu Navbar diklik */
             scroll-behavior: smooth; 
         }
 
@@ -62,7 +61,7 @@
             margin-top: 70px;
             height: 80vh;
             background:
-                linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.75)),
+                linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.85)),
                 url('/image/bg.jpg.jpeg') center/cover;
             display: flex;
             justify-content: center;
@@ -82,7 +81,7 @@
         .hero p {
             font-size: 1.2rem;
             color: #ddd;
-            max-width: 600px;
+            max-width: 650px;
             line-height: 1.6;
         }
 
@@ -105,7 +104,6 @@
             color: #C19A6B;
         }
 
-        /* GRID KATEGORI */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -167,7 +165,7 @@
         }
 
         .about-container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
@@ -191,22 +189,130 @@
             line-height: 1.8;
             color: #ccc;
             margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .quote {
             font-size: 22px;
             font-style: italic;
             color: white;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             font-weight: 300;
+        }
+
+        /* GRID UNTUK NILAI FILOSOFI */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .about-feature {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 35px 25px;
+            border-radius: 12px;
+            border-bottom: 3px solid #C19A6B;
+            text-align: left;
+            transition: 0.3s;
+        }
+
+        .about-feature:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+        }
+
+        .about-feature h3 {
+            color: #C19A6B;
+            margin-bottom: 15px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .about-feature p {
+            font-size: 15px;
+            color: #bbb;
+            line-height: 1.7;
+        }
+
+        /* KONTAK PENGELOLA SECTION */
+        .contact-section {
+            background-color: #111;
+            padding: 70px 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .contact-title {
+            color: #C19A6B;
+            font-size: 28px;
+            margin-bottom: 40px;
+            font-weight: 700;
+        }
+
+        .contact-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-card {
+            background: #1E1E1E;
+            padding: 30px 20px;
+            border-radius: 10px;
+            min-width: 260px;
+            flex: 1;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+
+        .contact-card:hover {
+            border-color: #C19A6B;
+            transform: translateY(-5px);
+        }
+
+        .contact-card h4 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .contact-card p {
+            font-size: 14px;
+            color: #C19A6B;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .contact-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .contact-link:hover {
+            background: #1ebc59;
         }
 
         /* FOOTER */
         .footer {
             text-align: center;
-            padding: 25px;
-            background-color: #111;
-            color: #888;
+            padding: 20px;
+            background-color: #0a0a0a;
+            color: #666;
             font-size: 14px;
         }
 
@@ -228,26 +334,33 @@
             .about-title {
                 font-size: 28px;
             }
+            .contact-grid {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 
 <body>
 
+    <!-- NAVBAR -->
     <div class="navbar">
         <h2>👟 Retro Collection</h2>
         <div class="nav-links">
             <a href="/">Home</a>
             <a href="#kategori">Kategori</a>
             <a href="#tentang-kami">Tentang Kami</a>
+            <a href="#kontak">Kontak</a>
         </div>
     </div>
 
+    <!-- HERO -->
     <div class="hero">
-        <h1>Langkah Klasik,<br>Gaya Ikonik.</h1>
-        <p>Temukan koleksi sepatu retro premium yang dirancang untuk kenyamanan modern tanpa mengorbankan nilai sejarah.</p>
+        <h1>Karya Tangan Lokal,<br>Kualitas Global.</h1>
+        <p>Sebuah etalase digital yang didedikasikan untuk mengangkat keindahan, ketangguhan, dan detail mahakarya sepatu dari para pengrajin lokal terbaik Nusantara.</p>
     </div>
 
+    <!-- CATEGORY -->
     <div class="section" id="kategori">
         <h2 class="section-title">Koleksi <span>Pilihan</span></h2>
 
@@ -262,26 +375,80 @@
         </div>
     </div>
 
+    <!-- ABOUT / FILOSOFI -->
     <div class="about-section" id="tentang-kami">
         <div class="about-container">
-            <div class="about-subtitle">Filosofi Kami</div>
-            <h2 class="about-title">Lebih dari Sekadar Alas Kaki</h2>
+            <div class="about-subtitle">Panggung Untuk Pengrajin Lokal</div>
+            <h2 class="about-title">Menghubungkan Karya Terbaik Langsung ke Tangan Anda.</h2>
             
             <div class="quote">
-                "Melangkah dengan Gaya Klasik, Nyaman di Era Modern."
+                "Mahakarya luar biasa seringkali bersembunyi di bengkel-bengkel kecil, menunggu untuk ditemukan."
             </div>
 
             <p class="about-text">
-                Kami percaya bahwa sepatu bukan sekadar alas kaki, melainkan cerminan karakter dan perjalanan hidup pemakainya. Di <strong>Retro Collection</strong>, kami menghidupkan kembali desain-desain klasik yang tak lekang oleh waktu, dan memadukannya dengan teknologi serta kenyamanan masa kini.
+                Banyak pengrajin sepatu lokal kita yang memiliki dedikasi dan keterampilan luar biasa dalam memproduksi alas kaki berkualitas tinggi, namun kesulitan dalam menjangkau masyarakat luas. <strong>Retro Collection</strong> hadir sebagai solusi dan jembatan etalase digital untuk mereka.
             </p>
             <p class="about-text">
-                Setiap jahitan, material kulit, dan lekukan sol dipilih dengan teliti. Misi kami sederhana: memastikan Anda mendapatkan sepatu yang tangguh, elegan, dan siap menemani setiap langkah Anda menggapai tujuan dengan penuh percaya diri.
+                Setiap pasang sepatu yang dipamerkan di sini adalah hasil dari jahitan tangan, pemilihan material kulit yang cermat, dan kerja keras para pengrajin lokal. Kami menyediakan platform yang estetik agar Anda bisa mengapresiasi detail karya mereka dengan mudah.
             </p>
+
+            <!-- KOTAK NILAI-NILAI FILOSOFI -->
+            <div class="about-grid">
+                <div class="about-feature">
+                    <h3>📷 Etalase Visual Estetik</h3>
+                    <p>Kami menyajikan tampilan galeri produk yang bersih dan elegan. Anda dapat melihat foto-foto produk dari berbagai sudut untuk memastikan kualitas presisi jahitan dan bentuk sepatu buatan pengrajin.</p>
+                </div>
+                <div class="about-feature">
+                    <h3>🔍 Transparansi Material</h3>
+                    <p>Masyarakat berhak tahu apa yang mereka kenakan. Oleh karena itu, kami memberikan informasi detail mengenai jenis bahan, kualitas kulit, hingga tipe sol yang digunakan oleh pengrajin pada setiap karya sepatunya.</p>
+                </div>
+                <div class="about-feature">
+                    <h3>💬 Langsung ke Pengrajin</h3>
+                    <p>Tanpa sistem keranjang belanja yang rumit. Jika Anda tertarik dengan sebuah produk, sistem kami akan langsung menghubungkan Anda secara personal ke WhatsApp pengrajin untuk bertransaksi dengan mudah.</p>
+                </div>
+            </div>
+
         </div>
     </div>
 
+    <!-- KONTAK PENGELOLA (TAMBAHAN BARU) -->
+    <div class="contact-section" id="kontak">
+        <h2 class="contact-title">Tim Pengelola & Pengrajin</h2>
+        <div class="contact-grid">
+            
+            <!-- Kontak 1 -->
+            <div class="contact-card">
+                <h4>[Nama Kamu / Rasyad]</h4>
+                <p>Owner & Lead Developer</p>
+                <a href="https://wa.me/6281234567890" target="_blank" class="contact-link">
+                    Hubungi via WhatsApp
+                </a>
+            </div>
+
+            <!-- Kontak 2 -->
+            <div class="contact-card">
+                <h4>[Nama Teman 1]</h4>
+                <p>Head of Craftsmanship</p>
+                <a href="https://wa.me/6281234567891" target="_blank" class="contact-link">
+                    Hubungi via WhatsApp
+                </a>
+            </div>
+
+            <!-- Kontak 3 -->
+            <div class="contact-card">
+                <h4>[Nama Teman 2]</h4>
+                <p>Operational Manager</p>
+                <a href="https://wa.me/6281234567892" target="_blank" class="contact-link">
+                    Hubungi via WhatsApp
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
     <div class="footer">
-        &copy; 2026 Retro Collection. All rights reserved.
+        &copy; 2026 Retro Collection - Dukung Pengrajin Lokal.
     </div>
 
 </body>
