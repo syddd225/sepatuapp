@@ -2,14 +2,9 @@
 
 namespace Database\Seeders;
 
-<<<<<<< HEAD
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
-=======
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
->>>>>>> 12309d05081218b0bf392f1ac7d5b4a2135f03e3
 
 class DatabaseSeeder extends Seeder
 {

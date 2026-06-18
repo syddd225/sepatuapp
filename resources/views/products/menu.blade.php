@@ -235,7 +235,7 @@
 <body>
 
     <div class="navbar">
-        <h2> Retro Collection</h2>
+        <h2>👟 Retro Collection</h2>
         <div class="nav-links">
             <a href="/">Home</a>
             <a href="#kategori">Kategori</a>
