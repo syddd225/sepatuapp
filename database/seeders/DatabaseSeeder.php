@@ -18,13 +18,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-<<<<<<< HEAD
         // Create predefined shoe categories
         $categories = [
-=======
-        // 1. Masukkan data ke tabel categories
-        DB::table('categories')->insert([
->>>>>>> 12309d05081218b0bf392f1ac7d5b4a2135f03e3
             [
                 'name' => 'Formal',
                 'slug' => 'formal',
