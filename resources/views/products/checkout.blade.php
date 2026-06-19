@@ -407,7 +407,12 @@
         </div>
     </div>
 
-    <div class="checkout-container">
+    <form action="{{ route('checkout.complete', $product->id) }}" method="POST">
+        @csrf
+        <input type="hidden" name="ukuran" value="{{ $ukuran }}">
+        <input type="hidden" name="warna" value="{{ $warna }}">
+
+        <div class="checkout-container">
 
         <!-- KIRI: RINCIAN ORDER, PENGIRIMAN, PEMBAYARAN -->
         <div>
@@ -434,7 +439,7 @@
                             
                             <div class="qty-control">
                                 <button type="button" class="qty-btn" onclick="alterQty(-1)">-</button>
-                                <input type="text" id="itemQty" class="qty-input" value="1" readonly>
+                                <input type="text" id="itemQty" name="qty" class="qty-input" value="1" readonly>
                                 <button type="button" class="qty-btn" onclick="alterQty(1)">+</button>
                             </div>
                         </div>
@@ -489,7 +494,7 @@
                         </div>
                     </div>
                     <label class="switch">
-                        <input type="checkbox" id="voucherToggle" onchange="calculateGrandTotal()">
+                        <input type="checkbox" id="voucherToggle" name="use_voucher" value="1" onchange="calculateGrandTotal()">
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -550,14 +555,12 @@
                     <div class="total-price-value" id="lblGrandTotal">Rp 0</div>
                 </div>
 
-                <form action="#" method="POST" onsubmit="alert('Pesanan Sukses Diproses! Tim Retro Collection akan segera memproses pesanan Anda.'); return false;">
-                    @csrf
-                    <button type="submit" class="btn-checkout">Selesaikan Pembayaran</button>
-                </form>
+                <button type="submit" class="btn-checkout">Selesaikan Pembayaran</button>
             </div>
         </div>
 
     </div>
+    </form>
 
     <script>
         const productUnitPrice = parseInt("{{ $product->price }}");

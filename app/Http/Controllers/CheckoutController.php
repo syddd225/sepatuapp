@@ -25,4 +25,65 @@ class CheckoutController extends Controller
         // return view($viewName, compact('product', 'ukuran', 'warna'));
         return view("products.checkout", compact('product', 'ukuran', 'warna'));
     }
+
+    /**
+     * Memproses data checkout dan menampilkan struk pembayaran (receipt)
+     */
+    public function complete(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $ukuran = $request->input('ukuran', '-');
+        $warna = $request->input('warna', '-');
+        $qty = intval($request->input('qty', 1));
+        if ($qty < 1) $qty = 1;
+
+        $shippingTier = $request->input('shipping_tier', 'hemat');
+        $useVoucher = $request->has('use_voucher') || $request->input('use_voucher') == '1';
+        $paymentMethod = $request->input('payment_method', 'transfer');
+
+        // Kalkulasi rincian harga
+        $totalItemPrice = $product->price * $qty;
+        $baseDeliveryFee = ($qty === 1) ? 10000 : 12000;
+        
+        $shippingTierFee = 5000;
+        $shippingName = 'Hemat Kargo';
+        $shippingEstimation = 'Estimasi tiba dalam 5-8 hari kerja';
+        if ($shippingTier === 'reguler') {
+            $shippingTierFee = 8000;
+            $shippingName = 'Reguler Standard';
+            $shippingEstimation = 'Estimasi tiba dalam 2-4 hari kerja';
+        } elseif ($shippingTier === 'prioritas') {
+            $shippingTierFee = 10000;
+            $shippingName = 'Prioritas Ekspres';
+            $shippingEstimation = 'Estimasi tiba dalam 1-2 hari kerja';
+        }
+
+        $totalShippingCost = $baseDeliveryFee + $shippingTierFee;
+        $voucherDiscount = $useVoucher ? $totalShippingCost : 0;
+        $grandTotal = $totalItemPrice + $totalShippingCost - $voucherDiscount;
+
+        // Generate Transaction ID unik
+        $transactionId = 'RC-' . date('Ymd') . '-' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
+        $transactionDate = now()->translatedFormat('d F Y H:i') . ' WIB';
+
+        return view('products.receipt', compact(
+            'product',
+            'ukuran',
+            'warna',
+            'qty',
+            'shippingTier',
+            'shippingName',
+            'shippingEstimation',
+            'shippingTierFee',
+            'baseDeliveryFee',
+            'totalShippingCost',
+            'useVoucher',
+            'voucherDiscount',
+            'paymentMethod',
+            'grandTotal',
+            'transactionId',
+            'transactionDate'
+        ));
+    }
 }

@@ -572,7 +572,7 @@
                     <label for="wrn-ori" class="box-label box-warna">Original</label>
 
                     <input type="radio" name="warna" id="wrn-gelap" value="Custom Gelap">
-                    <label for="wrn-gelap" class="box-label box-warna">Custom Gelap</label>
+                    <label for="wrn-gelap" class="box-label box-warna">Custom</label>
                 </div>
             </div>
 
@@ -587,7 +587,7 @@
                     </button>
 
                     <button onclick="kirimKeWA()" class="btn btn-wa">
-                        Tanya Kami
+                        Hubungi Kami
                     </button>
                 </div>
 

@@ -85,3 +85,4 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 Route::get('/checkout/{id}', [CheckoutController::class, 'index'])->middleware('auth');
+Route::post('/checkout/{id}/complete', [CheckoutController::class, 'complete'])->name('checkout.complete')->middleware('auth');

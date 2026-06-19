@@ -5,7 +5,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h2>✏️ Edit Produk</h2>
+            <h2>Edit Produk</h2>
         </div>
 
         <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
@@ -223,10 +223,10 @@
             <!-- Buttons -->
             <div style="display: flex; gap: 1rem; margin-top: 2rem;">
                 <button type="submit" class="btn btn-primary" style="flex: 1;">
-                    💾 Simpan Perubahan
+                    Simpan Perubahan
                 </button>
                 <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary" style="flex: 1; text-align: center;">
-                    ← Kembali
+                    Kembali
                 </a>
             </div>
         </form>
@@ -235,7 +235,7 @@
     <!-- Danger Zone -->
     <div class="card" style="margin-top: 2rem; border-left: 4px solid #f44336;">
         <div class="card-header">
-            <h2 style="color: #ef5350;">🗑️ Zona Bahaya</h2>
+            <h2 style="color: #ef5350;">Zona Bahaya</h2>
         </div>
 
         <p style="margin-bottom: 1rem; color: #ef5350;">
@@ -246,7 +246,7 @@
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger">
-                🗑️ Hapus Produk Selamanya
+                Hapus Produk Selamanya
             </button>
         </form>
     </div>
