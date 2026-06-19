@@ -275,7 +275,7 @@
             padding: 35px 25px;
             border-radius: 12px;
             border-bottom: 3px solid #C19A6B;
-            text-align: left;
+            text-align: justify;
             transition: 0.3s;
         }
 
@@ -527,15 +527,15 @@
 
             <div class="about-grid">
                 <div class="about-feature">
-                    <h3>📷 Etalase Visual Estetik</h3>
+                    <h3>Etalase Visual Estetik</h3>
                     <p>Kami menyajikan tampilan galeri produk yang bersih dan elegan. Anda dapat melihat foto-foto produk dari berbagai sudut untuk memastikan kualitas presisi jahitan dan bentuk sepatu buatan pengrajin.</p>
                 </div>
                 <div class="about-feature">
-                    <h3>🔍 Transparansi Material</h3>
+                    <h3>Transparansi Material</h3>
                     <p>Masyarakat berhak tahu apa yang mereka kenakan. Oleh karena itu, kami memberikan informasi detail mengenai jenis bahan, kualitas kulit, hingga tipe sol yang digunakan oleh pengrajin pada setiap karya sepatunya.</p>
                 </div>
                 <div class="about-feature">
-                    <h3>💬 Langsung ke Pengrajin</h3>
+                    <h3>Langsung ke Pengrajin</h3>
                     <p>Tanpa sistem keranjang belanja yang rumit. Jika Anda tertarik dengan sebuah produk, sistem kami akan langsung menghubungkan Anda secara personal ke WhatsApp pengrajin untuk bertransaksi dengan mudah.</p>
                 </div>
             </div>
