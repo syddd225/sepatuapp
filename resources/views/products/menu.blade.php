@@ -253,6 +253,7 @@
             max-width: 800px;
             margin-left: auto;
             margin-right: auto;
+            text-align: justify;
         }
 
         .quote {
@@ -275,7 +276,7 @@
             padding: 35px 25px;
             border-radius: 12px;
             border-bottom: 3px solid #C19A6B;
-            text-align: left;
+            text-align: justify;
             transition: 0.3s;
         }
 
