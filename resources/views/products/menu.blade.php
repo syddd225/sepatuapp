@@ -19,18 +19,18 @@
             font-family: 'Inter', sans-serif;
             background-color: #F5F5F5;
             color: #333;
-            scroll-behavior: smooth; 
+            scroll-behavior: smooth;
         }
 
-        /* NAVBAR */
+        /* NAVBAR UTAMA */
         .navbar {
-            position: fixed;
+            position: sticky;
             top: 0;
             width: 100%;
-            padding: 20px 60px;
+            padding: 15px 40px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: center; /* Diperbaiki dari 'right' menjadi 'center' */
             background: #1E1E1E;
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -40,14 +40,29 @@
             font-weight: 700;
             color: white;
             font-size: 24px;
+            margin: 0;
+        }
+
+        /* WRAPPER MENU KANAN (Desktop) */
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            justify-content: flex-end; /* Memaksa menu ke kanan */
+            gap: 30px; /* Jarak antara menu teks dan tombol auth */
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
         }
 
         .nav-links a {
-            margin-left: 25px;
+            margin: 0 15px;
             text-decoration: none;
             color: white;
             opacity: 0.8;
-            font-size: 16px;
+            font-size: 15px;
             transition: 0.3s;
         }
 
@@ -56,9 +71,55 @@
             color: #C19A6B;
         }
 
+        .auth-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-login {
+            background: #C19A6B;
+            color: #1E1E1E !important;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .btn-login:hover {
+            background: #a8855a;
+        }
+
+        .btn-logout {
+            color: #ef5350;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-logout:hover {
+            opacity: 0.8;
+        }
+
+        /* IKON HAMBURGER MENU (Sembunyi di Desktop) */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
         /* HERO */
         .hero {
-            margin-top: 70px;
             height: 80vh;
             background:
                 linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.85)),
@@ -131,7 +192,7 @@
             font-size: 28px;
             color: #111;
         }
-        
+
         .card p {
             color: #666;
             margin-bottom: 25px;
@@ -156,8 +217,7 @@
             background: #C19A6B;
         }
 
-
-        /* ABOUT / FILOSOFI SECTION */
+        /* ABOUT SECTION */
         .about-section {
             background-color: #1E1E1E;
             padding: 100px 20px;
@@ -203,7 +263,6 @@
             font-weight: 300;
         }
 
-        /* GRID UNTUK NILAI FILOSOFI */
         .about-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -240,103 +299,158 @@
             line-height: 1.7;
         }
 
-        /* KONTAK PENGELOLA SECTION */
-        .contact-section {
-            background-color: #111;
-            padding: 70px 20px;
-            color: white;
-            text-align: center;
+        /* MEGA FOOTER */
+        .footer-complex {
+            background-color: #050505;
+            color: #ccc;
+            padding: 70px 40px 30px;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
         }
 
-        .contact-title {
-            color: #C19A6B;
-            font-size: 28px;
-            margin-bottom: 40px;
-            font-weight: 700;
-        }
-
-        .contact-grid {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 25px;
-            max-width: 1000px;
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        .contact-card {
-            background: #1E1E1E;
-            padding: 30px 20px;
-            border-radius: 10px;
-            min-width: 260px;
-            flex: 1;
-            border: 1px solid #333;
+        .footer-col h4 {
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-col p {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #aaa;
+        }
+
+        .footer-col a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 15px;
             transition: 0.3s;
         }
 
-        .contact-card:hover {
-            border-color: #C19A6B;
-            transform: translateY(-5px);
-        }
-
-        .contact-card h4 {
-            font-size: 20px;
-            margin-bottom: 8px;
-            color: #fff;
-        }
-
-        .contact-card p {
-            font-size: 14px;
+        .footer-col a:hover {
             color: #C19A6B;
-            margin-bottom: 20px;
+        }
+
+        .footer-col .read-more {
+            color: #C19A6B;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .work-hours {
+            width: 100%;
+            font-size: 14px;
+            border-collapse: collapse;
+        }
+
+        .work-hours td {
+            padding: 10px 0;
+            border-bottom: 1px solid #222;
+            color: #aaa;
+        }
+
+        .work-hours tr:last-child td {
+            border-bottom: none;
+        }
+
+        .work-hours td:last-child {
+            text-align: right;
+            color: #fff;
             font-weight: 600;
         }
 
-        .contact-link {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #25D366;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .contact-link:hover {
-            background: #1ebc59;
-        }
-
-        /* FOOTER */
-        .footer {
+        .footer-bottom {
             text-align: center;
-            padding: 20px;
-            background-color: #0a0a0a;
+            padding-top: 30px;
+            margin-top: 50px;
+            border-top: 1px solid #222;
+            font-size: 13px;
             color: #666;
-            font-size: 14px;
         }
 
-        /* RESPONSIVE */
+        /* -------------------------------------
+           RESPONSIVE MOBILE & HAMBURGER MENU
+           ------------------------------------- */
         @media(max-width: 768px) {
             .navbar {
+                padding: 15px 20px;
+            }
+
+            .navbar h2 {
+                font-size: 20px;
+            }
+
+            /* Tampilkan Ikon Hamburger */
+            .menu-toggle {
+                display: flex;
+            }
+
+            /* Sembunyikan Menu secara default */
+            .nav-wrapper {
+                display: none; /* INI YANG MEMPERBAIKI MASALAH MACET */
+                flex-direction: column;
+                position: absolute;
+                top: 100%; 
+                left: 0;
+                width: 100%;
+                background: #1E1E1E;
                 padding: 20px;
+                margin-left: 0;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+                gap: 20px;
+            }
+
+            /* Saat ikon diklik, class .active ditambahkan, menu muncul */
+            .nav-wrapper.active {
+                display: flex;
+            }
+
+            .nav-links {
                 flex-direction: column;
                 gap: 15px;
-                position: static;
+                width: 100%;
             }
-            .hero {
-                margin-top: 0;
-                height: 60vh;
+
+            .nav-links a {
+                margin: 0;
+                font-size: 16px;
+                display: block;
+                text-align: center;
+                width: 100%;
+                padding: 10px 0;
+                border-bottom: 1px solid #333;
             }
+
+            .auth-links {
+                justify-content: center;
+                width: 100%;
+            }
+
             .hero h1 {
                 font-size: 2.5rem;
             }
+
             .about-title {
                 font-size: 28px;
             }
-            .contact-grid {
-                flex-direction: column;
+
+            .footer-complex {
+                padding: 50px 20px 20px;
             }
         }
     </style>
@@ -344,46 +458,43 @@
 
 <body>
 
-    <!-- NAVBAR -->
     <div class="navbar">
-        <h2>👟 Retro Collection</h2>
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="#kategori">Kategori</a>
-            <a href="#tentang-kami">Tentang Kami</a>
-            <a href="#kontak">Kontak</a>
+        <h2>Retro Collection</h2>
+
+        <div class="menu-toggle" id="mobile-menu" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="nav-wrapper" id="nav-wrapper">
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="#kategori">Kategori</a>
+                <a href="#tentang-kami">Tentang Kami</a>
+                <a href="#kontak">Kontak</a>
+            </div>
+
+            <div class="auth-links">
+                @auth
+                    <a href="#" class="btn-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        Logout ({{ auth()->user()->name }})
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                @else
+                    <a href="/login" class="btn-login">Masuk / Daftar</a>
+                @endauth
+            </div>
         </div>
     </div>
 
-    <div class="navbar">
-        <h2>👟 Retro Collection</h2>
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="#kategori">Kategori</a>
-            <a href="#tentang-kami">Tentang Kami</a>
-            <a href="#kontak">Kontak</a>
-        </div>
-    </div>
-
-    <div class="navbar">
-        @auth
-            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color: #ef5350;">Logout ({{ auth()->user()->name }})</a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
-        @else
-            <a href="/login" style="background: #C19A6B; color: #1E1E1E; padding: 8px 15px; border-radius: 6px; font-weight: 600;">Masuk / Daftar</a>
-        @endauth
-    </div>
-</div>
-
-    <!-- HERO -->
     <div class="hero">
         <h1>Karya Tangan Lokal,<br>Kualitas Global.</h1>
         <p>Sebuah etalase digital yang didedikasikan untuk mengangkat keindahan, ketangguhan, dan detail mahakarya sepatu dari para pengrajin lokal terbaik Nusantara.</p>
     </div>
 
-    <!-- CATEGORY -->
     <div class="section" id="kategori">
         <h2 class="section-title">Koleksi <span>Pilihan</span></h2>
 
@@ -398,12 +509,11 @@
         </div>
     </div>
 
-    <!-- ABOUT / FILOSOFI -->
     <div class="about-section" id="tentang-kami">
         <div class="about-container">
             <div class="about-subtitle">Panggung Untuk Pengrajin Lokal</div>
             <h2 class="about-title">Menghubungkan Karya Terbaik Langsung ke Tangan Anda.</h2>
-            
+
             <div class="quote">
                 "Mahakarya luar biasa seringkali bersembunyi di bengkel-bengkel kecil, menunggu untuk ditemukan."
             </div>
@@ -415,7 +525,6 @@
                 Setiap pasang sepatu yang dipamerkan di sini adalah hasil dari jahitan tangan, pemilihan material kulit yang cermat, dan kerja keras para pengrajin lokal. Kami menyediakan platform yang estetik agar Anda bisa mengapresiasi detail karya mereka dengan mudah.
             </p>
 
-            <!-- KOTAK NILAI-NILAI FILOSOFI -->
             <div class="about-grid">
                 <div class="about-feature">
                     <h3>📷 Etalase Visual Estetik</h3>
@@ -434,45 +543,66 @@
         </div>
     </div>
 
-    <!-- KONTAK PENGELOLA (TAMBAHAN BARU) -->
-    <div class="contact-section" id="kontak">
-        <h2 class="contact-title">Tim Pengelola & Pengrajin</h2>
-        <div class="contact-grid">
-            
-            <!-- Kontak 1 -->
-            <div class="contact-card">
-                <h4>[Nama Kamu / Rasyad]</h4>
-                <p>Owner & Lead Developer</p>
-                <a href="https://wa.me/6281234567890" target="_blank" class="contact-link">
-                    Hubungi via WhatsApp
-                </a>
+    <div class="footer-complex" id="kontak">
+        <div class="footer-grid">
+
+            <div class="footer-col">
+                <h4>Tentang Kami</h4>
+                <p>Retro Collection didirikan dengan visi untuk menghadirkan mahakarya sepatu berkualitas dari pengrajin lokal Nusantara yang dapat dijangkau oleh seluruh lapisan masyarakat.</p>
+                <a href="/#tentang-kami" class="read-more">Baca selengkapnya</a>
             </div>
 
-            <!-- Kontak 2 -->
-            <div class="contact-card">
-                <h4>[Nama Teman 1]</h4>
-                <p>Head of Craftsmanship</p>
-                <a href="https://wa.me/6281234567891" target="_blank" class="contact-link">
-                    Hubungi via WhatsApp
-                </a>
+            <div class="footer-col">
+                <h4>Menu</h4>
+                <a href="/">Home</a>
+                <a href="/#tentang-kami">Tentang Kami</a>
+                <a href="/#kategori">Produk Kami</a>
+                <a href="/#kontak">Hubungi Kami</a>
             </div>
 
-            <!-- Kontak 3 -->
-            <div class="contact-card">
-                <h4>[Nama Teman 2]</h4>
-                <p>Operational Manager</p>
-                <a href="https://wa.me/6281234567892" target="_blank" class="contact-link">
-                    Hubungi via WhatsApp
-                </a>
+            <div class="footer-col">
+                <h4>Alamat Kantor & Workshop</h4>
+                <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <span style="font-size: 18px;">📍</span>
+                    <p style="margin: 0;">
+                        Jl. Dr. Radjiman No. 88,<br>
+                        Laweyan, Kota Surakarta,<br>
+                        Jawa Tengah, 57141
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Jam Kerja</h4>
+                <p>Dukungan kami tersedia untuk membantu Anda 24 jam sehari, tujuh hari seminggu.</p>
+                <table class="work-hours">
+                    <tr>
+                        <td>Senin - Jumat</td>
+                        <td>08:00 AM - 05:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Sabtu</td>
+                        <td>08:00 AM - 03:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Minggu</td>
+                        <td style="color: #666; font-weight: normal;">Libur</td>
+                    </tr>
+                </table>
             </div>
 
         </div>
+        <div class="footer-bottom">
+            &copy; 2026 Retro Collection. All rights reserved.
+        </div>
     </div>
 
-    <!-- FOOTER -->
-    <div class="footer">
-        &copy; 2026 Retro Collection - Dukung Pengrajin Lokal.
-    </div>
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("nav-wrapper");
+            menu.classList.toggle("active");
+        }
+    </script>
 
 </body>
 

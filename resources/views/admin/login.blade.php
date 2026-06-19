@@ -144,7 +144,7 @@
 <body>
     <div class="login-container">
         <div class="login-header">
-            <h1>🔐 Admin</h1>
+            <h1>Admin</h1>
             <p>Panel Manajemen Produk</p>
         </div>
 

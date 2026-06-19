@@ -384,7 +384,7 @@
     <div class="admin-container">
         @if (!Route::is('admin.login'))
             <header class="admin-header">
-                <h1>🛠️ Admin Panel</h1>
+                <h1>Admin Panel</h1>
                 <nav class="admin-nav">
                     <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                     <a href="{{ route('admin.products.create') }}">+ Produk Baru</a>

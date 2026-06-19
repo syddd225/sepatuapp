@@ -83,3 +83,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
     });
 });
+
+Route::get('/checkout/{id}', [CheckoutController::class, 'index'])->middleware('auth');
