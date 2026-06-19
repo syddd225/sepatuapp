@@ -413,6 +413,11 @@
         <input type="hidden" name="warna" value="{{ $warna }}">
 
         <div class="checkout-container">
+            @if ($errors->any())
+                <div style="grid-column: 1 / -1; background-color: #FDF2F2; color: #9B1C1C; padding: 16px 20px; border-radius: 12px; border: 1px solid #FDE8E8; font-weight: 500; display: flex; align-items: center; gap: 10px;">
+                    ⚠️ @foreach ($errors->all() as $error) {{ $error }} @endforeach
+                </div>
+            @endif
 
         <!-- KIRI: RINCIAN ORDER, PENGIRIMAN, PEMBAYARAN -->
         <div>

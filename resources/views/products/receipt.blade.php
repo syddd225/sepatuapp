@@ -206,6 +206,7 @@
         .breakdown-row {
             display: flex;
             justify-content: space-between;
+            align-items: center; /* Mencegah teks terlihat 'offside' secara vertikal */
             font-size: 14px;
             color: #555;
             margin-bottom: 12px;
@@ -228,6 +229,7 @@
         .grand-total-val {
             color: #C19A6B;
             font-size: 22px;
+            line-height: 1; /* Menjaga teks tidak melebar keluar batas baris */
         }
 
         /* SHIPPING INFO BOX */
@@ -314,21 +316,91 @@
             transform: translateY(-2px);
         }
 
+
         /* PRINT STYLES */
         @media print {
+            @page {
+                size: A4 portrait;
+                margin: 8mm 12mm;
+            }
             body {
                 background: #FFF;
-                padding: 0;
+                padding: 0 !important;
+                margin: 0 !important;
+                font-size: 14.5px !important;
             }
 
             .receipt-wrapper {
-                box-shadow: none;
-                border: none;
-                max-width: 100%;
+                box-shadow: none !important;
+                border: none !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                page-break-inside: avoid;
             }
 
-            .receipt-wrapper::before {
-                display: none;
+            .receipt-header {
+                padding: 32px 32px 18px !important;
+            }
+
+            .success-icon {
+                width: 68px !important;
+                height: 68px !important;
+                font-size: 27px !important;
+                margin-bottom: 16px !important;
+            }
+
+            .receipt-body {
+                padding: 26px 32px !important;
+            }
+
+            .info-grid {
+                margin-bottom: 32px !important;
+                gap: 16px 24px !important;
+            }
+
+            .section-title {
+                margin-bottom: 16px !important;
+                font-size: 13px !important;
+            }
+
+            .item-card {
+                padding: 16px 22px !important;
+                margin-bottom: 32px !important;
+                gap: 18px !important;
+            }
+
+            .item-image, .item-image-placeholder {
+                width: 72px !important;
+                height: 72px !important;
+            }
+
+            .shipping-info-box {
+                padding: 16px 22px !important;
+                margin-bottom: 32px !important;
+            }
+
+            .shipping-address {
+                padding: 11px 13px !important;
+            }
+
+            .price-breakdown {
+                padding-top: 18px !important;
+                margin-bottom: 22px !important;
+            }
+
+            .breakdown-row {
+                margin-bottom: 11px !important;
+            }
+
+            .breakdown-row.grand-total {
+                margin-top: 18px !important;
+                padding-top: 18px !important;
+            }
+
+            .receipt-header::before, .receipt-header::after {
+                background: #FFF !important;
             }
 
             .action-area, .navbar {

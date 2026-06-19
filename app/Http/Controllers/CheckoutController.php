@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product; 
+use App\Models\Order;
 
 class CheckoutController extends Controller
 {
@@ -38,6 +39,17 @@ class CheckoutController extends Controller
         $qty = intval($request->input('qty', 1));
         if ($qty < 1) $qty = 1;
 
+        // Validasi stok produk
+        if ($product->stock < $qty) {
+            return redirect()->back()->withErrors([
+                'stock' => "Maaf, stok tidak mencukupi. Stok tersedia saat ini: {$product->stock} pasang."
+            ]);
+        }
+
+        // Kurangi stok produk di database
+        $product->stock -= $qty;
+        $product->save();
+
         $shippingTier = $request->input('shipping_tier', 'hemat');
         $useVoucher = $request->has('use_voucher') || $request->input('use_voucher') == '1';
         $paymentMethod = $request->input('payment_method', 'transfer');
@@ -64,8 +76,27 @@ class CheckoutController extends Controller
         $grandTotal = $totalItemPrice + $totalShippingCost - $voucherDiscount;
 
         // Generate Transaction ID unik
-        $transactionId = 'RC-' . date('Ymd') . '-' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
-        $transactionDate = now()->translatedFormat('d F Y H:i') . ' WIB';
+        $transactionId = 'RC-' . now()->timezone('Asia/Jakarta')->format('Ymd') . '-' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
+        $transactionDate = now()->timezone('Asia/Jakarta')->translatedFormat('d F Y H:i') . ' WIB';
+
+        // Simpan transaksi ke tabel orders
+        $order = Order::create([
+            'transaction_id' => $transactionId,
+            'user_id' => auth()->id(),
+            'product_id' => $product->id,
+            'qty' => $qty,
+            'ukuran' => $ukuran,
+            'warna' => $warna,
+            'shipping_tier' => $shippingTier,
+            'shipping_name' => $shippingName,
+            'base_delivery_fee' => $baseDeliveryFee,
+            'shipping_tier_fee' => $shippingTierFee,
+            'total_shipping_cost' => $totalShippingCost,
+            'use_voucher' => $useVoucher,
+            'voucher_discount' => $voucherDiscount,
+            'payment_method' => $paymentMethod,
+            'grand_total' => $grandTotal,
+        ]);
 
         return view('products.receipt', compact(
             'product',
@@ -83,7 +114,8 @@ class CheckoutController extends Controller
             'paymentMethod',
             'grandTotal',
             'transactionId',
-            'transactionDate'
+            'transactionDate',
+            'order'
         ));
     }
 }

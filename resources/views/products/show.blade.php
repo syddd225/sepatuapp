@@ -231,6 +231,48 @@
             z-index: 5;
         }
 
+        /* GALLERY THUMBNAILS */
+        .product-gallery {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .thumbnail-container {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+            justify-content: flex-start;
+        }
+
+        .thumbnail-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            background-color: #fff;
+        }
+
+        .thumbnail-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-item:hover {
+            border-color: #C19A6B;
+            transform: translateY(-2px);
+        }
+
+        .thumbnail-item.active {
+            border-color: #C19A6B;
+            box-shadow: 0 4px 15px rgba(193, 154, 107, 0.35);
+        }
+
         /* INFO PRODUK KANAN */
         .product-info {
             display: flex;
@@ -497,36 +539,54 @@
                     }
                 }
             }
-            $slides = array_slice($slides, 0, 3);
+
+            // Fallback dinamis jika data multi-angle kosong agar tetap menampilkan carousel premium
+            if (count($slides) <= 1 && !empty($product->image)) {
+                $slides[] = ['file' => $product->image, 'label' => 'Detail Samping'];
+                $slides[] = ['file' => $product->image, 'label' => 'Detail Material'];
+            }
+            $slides = array_slice($slides, 0, 4);
         @endphp
 
-        <div class="product-slider-container">
-            @if(count($slides) > 0)
-                <div class="slider-wrapper" id="sliderWrapper">
-                    @foreach($slides as $slide)
-                        <div class="slider-slide">
-                            <span class="angle-badge">{{ $slide['label'] }}</span>
+        <div class="product-gallery">
+            <div class="product-slider-container">
+                @if(count($slides) > 0)
+                    <div class="slider-wrapper" id="sliderWrapper">
+                        @foreach($slides as $slide)
+                            <div class="slider-slide">
+                                <span class="angle-badge">{{ $slide['label'] }}</span>
+                                <img src="/image/{{ $slide['file'] }}" alt="{{ $product->name }}">
+                            </div>
+                        @endforeach
+                    </div>
+
+                    @if(count($slides) > 1)
+                        <button class="slider-btn prev" onclick="changeSlide(-1)">&#10094;</button>
+                        <button class="slider-btn next" onclick="changeSlide(1)">&#10095;</button>
+                        
+                        <div class="slider-dots">
+                            @foreach($slides as $index => $slide)
+                                <span class="dot {{ $index == 0 ? 'active' : '' }}" onclick="goToSlide({{ $index }})"></span>
+                            @endforeach
+                        </div>
+                    @endif
+                @else
+                    <div style="width: 100%; height: 100%; background: #1E1E1E; display: flex; align-items: center; justify-content: center; color: #C19A6B;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 50px; margin-bottom: 10px;">👟</div>
+                            <div>Detail Foto Belum Diunggah</div>
+                        </div>
+                    </div>
+                @endif
+            </div>
+
+            @if(count($slides) > 1)
+                <div class="thumbnail-container">
+                    @foreach($slides as $index => $slide)
+                        <div class="thumbnail-item {{ $index == 0 ? 'active' : '' }}" onclick="goToSlide({{ $index }})">
                             <img src="/image/{{ $slide['file'] }}" alt="{{ $product->name }}">
                         </div>
                     @endforeach
-                </div>
-
-                @if(count($slides) > 1)
-                    <button class="slider-btn prev" onclick="changeSlide(-1)">&#10094;</button>
-                    <button class="slider-btn next" onclick="changeSlide(1)">&#10095;</button>
-                    
-                    <div class="slider-dots">
-                        @foreach($slides as $index => $slide)
-                            <span class="dot {{ $index == 0 ? 'active' : '' }}" onclick="goToSlide({{ $index }})"></span>
-                        @endforeach
-                    </div>
-                @endif
-            @else
-                <div style="width: 100%; height: 100%; background: #1E1E1E; display: flex; align-items: center; justify-content: center; color: #C19A6B;">
-                    <div style="text-align: center;">
-                        <div style="font-size: 50px; margin-bottom: 10px;">👟</div>
-                        <div>Detail Foto Belum Diunggah</div>
-                    </div>
                 </div>
             @endif
         </div>
@@ -621,6 +681,15 @@
                     dot.classList.add('active');
                 } else {
                     dot.classList.remove('active');
+                }
+            });
+
+            const thumbs = document.querySelectorAll('.thumbnail-item');
+            thumbs.forEach((thumb, idx) => {
+                if (idx === currentSlideIndex) {
+                    thumb.classList.add('active');
+                } else {
+                    thumb.classList.remove('active');
                 }
             });
         }
