@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
@@ -19,29 +19,52 @@
             font-family: 'Inter', sans-serif;
             background-color: #F5F5F5;
             color: #333;
+            scroll-behavior: smooth;
         }
 
-        /* NAVBAR */
+        /* -------------------------------------
+           1. NAVBAR & HAMBURGER MENU
+           ------------------------------------- */
         .navbar {
-            background-color: #1E1E1E;
-            padding: 20px 60px;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            padding: 15px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: #1E1E1E;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .navbar h2 {
             font-weight: 700;
             color: white;
             font-size: 24px;
+            margin: 0;
+        }
+
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            justify-content: flex-end;
+            gap: 30px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
         }
 
         .nav-links a {
-            margin-left: 25px;
+            margin: 0 15px;
             text-decoration: none;
             color: white;
             opacity: 0.8;
-            font-size: 16px;
+            font-size: 15px;
+            transition: 0.3s;
         }
 
         .nav-links a:hover {
@@ -49,7 +72,55 @@
             color: #C19A6B;
         }
 
-        /* DETAIL CONTAINER */
+        .auth-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-login {
+            background: #C19A6B;
+            color: #1E1E1E !important;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .btn-login:hover {
+            background: #a8855a;
+        }
+
+        .btn-logout {
+            color: #ef5350;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-logout:hover {
+            opacity: 0.8;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* -------------------------------------
+           2. DETAIL PRODUK (KIRI: SLIDER, KANAN: INFO)
+           ------------------------------------- */
         .detail-container {
             max-width: 1100px;
             margin: 50px auto;
@@ -59,16 +130,108 @@
             gap: 50px;
         }
 
-        /* GAMBAR KIRI */
-        .product-image img {
+        /* SLIDER KIRI */
+        .product-slider-container {
+            position: relative;
             width: 100%;
+            height: 480px;
             border-radius: 12px;
+            overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            object-fit: cover;
-            max-height: 500px;
+            background-color: #fff;
         }
 
-        /* INFO KANAN */
+        .slider-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .slider-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slider-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            color: #111;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: 0.3s;
+        }
+
+        .slider-btn:hover {
+            background: #C19A6B;
+            color: white;
+        }
+
+        .slider-btn.prev { left: 16px; }
+        .slider-btn.next { right: 16px; }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px solid #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dot.active {
+            background: #C19A6B;
+            width: 24px;
+            border-radius: 5px;
+        }
+
+        .angle-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(30, 30, 30, 0.85);
+            color: #fff;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(4px);
+            z-index: 5;
+        }
+
+        /* INFO PRODUK KANAN */
         .product-info {
             display: flex;
             flex-direction: column;
@@ -95,9 +258,6 @@
             margin-bottom: 30px;
         }
 
-        /* -------------------------------------
-           KOTAK VARIAN BUKAN DROPDOWN (NEW)
-           ------------------------------------- */
         .variant-group {
             margin-bottom: 25px;
         }
@@ -115,12 +275,10 @@
             gap: 12px;
         }
 
-        /* Sembunyikan bulat radio button asli */
         .variant-options input[type="radio"] {
             display: none;
         }
 
-        /* Desain dasar kotak-kotak */
         .box-label {
             display: flex;
             justify-content: center;
@@ -134,26 +292,22 @@
             color: #555;
         }
 
-        /* Ukuran spesifik untuk kotak angka */
         .box-ukuran {
             width: 50px;
             height: 50px;
             font-size: 15px;
         }
 
-        /* Ukuran spesifik untuk kotak teks warna */
         .box-warna {
             padding: 12px 20px;
             font-size: 14px;
         }
 
-        /* Efek saat didekati mouse */
         .box-label:hover {
             border-color: #C19A6B;
             color: #C19A6B;
         }
 
-        /* Efek saat opsi dipilih (warna kotak berubah emas) */
         .variant-options input[type="radio"]:checked + .box-label {
             border-color: #C19A6B;
             background: #C19A6B;
@@ -172,59 +326,117 @@
             font-weight: 600;
         }
 
-        /* TOMBOL */
         .btn-group {
             display: flex;
-            gap: 15px;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-main-row {
+            display: flex;
+            gap: 12px;
         }
 
         .btn {
             flex: 1;
             padding: 15px;
             text-align: center;
-            background: #C19A6B;
             border-radius: 10px;
             text-decoration: none;
-            color: white;
             font-weight: 600;
             border: none;
             cursor: pointer;
             font-size: 16px;
             transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .btn:hover {
-            background: #a8855a;
+        .btn-checkout {
+            background: #1E1E1E;
+            color: white;
         }
 
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #C19A6B;
-            color: #C19A6B;
-        }
+        .btn-checkout:hover { background: #C19A6B; }
 
-        .btn-outline:hover {
+        .btn-wa {
             background: #C19A6B;
             color: white;
         }
 
-        /* RESPONSIVE UNTUK HP */
+        .btn-wa:hover { background: #a8855a; }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #ddd;
+            color: #666;
+            font-size: 15px;
+            padding: 12px;
+        }
+
+        .btn-outline:hover {
+            background: #f5f5f5;
+            border-color: #999;
+            color: #333;
+        }
+        /* -------------------------------------
+           4. RESPONSIVE MOBILE
+           ------------------------------------- */
         @media(max-width: 768px) {
-            .navbar {
-                padding: 20px;
+            /* Navbar Mobile */
+            .navbar { padding: 15px 20px; }
+            .navbar h2 { font-size: 20px; }
+            .menu-toggle { display: flex; }
+            
+            .nav-wrapper {
+                display: none;
                 flex-direction: column;
-                gap: 15px;
+                position: absolute;
+                top: 100%; 
+                left: 0;
+                width: 100%;
+                background: #1E1E1E;
+                padding: 20px;
+                margin-left: 0;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+                gap: 20px;
             }
 
+            .nav-wrapper.active { display: flex; }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 15px;
+                width: 100%;
+            }
+
+            .nav-links a {
+                margin: 0;
+                font-size: 16px;
+                display: block;
+                text-align: center;
+                width: 100%;
+                padding: 10px 0;
+                border-bottom: 1px solid #333;
+            }
+
+            .auth-links {
+                justify-content: center;
+                width: 100%;
+            }
+
+            /* Layout Detail Produk Mobile */
             .detail-container {
                 grid-template-columns: 1fr;
                 margin: 30px auto;
                 gap: 30px;
             }
 
-            .btn-group {
-                flex-direction: column;
-            }
+            .product-slider-container { height: 320px; }
+            .btn-main-row { flex-direction: column; }
+            .footer-complex { padding: 50px 20px 20px; }
         }
     </style>
 </head>
@@ -233,18 +445,90 @@
 
     <div class="navbar">
         <h2>Retro Collection</h2>
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="/category/1">Formal</a>
-            <a href="/category/2">Casual</a>
-            <a href="/category/3">Boots</a>
+
+        <div class="menu-toggle" id="mobile-menu" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="nav-wrapper" id="nav-wrapper">
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/category/1">Formal</a>
+                <a href="/category/2">Casual</a>
+                <a href="/category/3">Boots</a>
+            </div>
+
+            <div class="auth-links">
+                @auth
+                    <a href="#" class="btn-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        Logout ({{ auth()->user()->name }})
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                @else
+                    <a href="/login" class="btn-login">Masuk / Daftar</a>
+                @endauth
+            </div>
         </div>
     </div>
 
     <div class="detail-container">
         
-        <div class="product-image">
-            <img src="/image/{{ $product->image }}" alt="{{ $product->name }}">
+        @php
+            $slides = [];
+            if (!empty($product->image)) {
+                $slides[] = ['file' => $product->image, 'label' => 'Tampak Utama'];
+            }
+
+            if (!empty($product->images_angles)) {
+                $anglesArray = is_array($product->images_angles) ? $product->images_angles : explode(',', $product->images_angles);
+                $index = 1;
+                foreach ($anglesArray as $angleFile) {
+                    $angleFileClean = trim($angleFile);
+                    if (!empty($angleFileClean)) {
+                        $slides[] = [
+                            'file' => $angleFileClean,
+                            'label' => 'Sudut Pandang ' . $index
+                        ];
+                        $index++;
+                    }
+                }
+            }
+            $slides = array_slice($slides, 0, 3);
+        @endphp
+
+        <div class="product-slider-container">
+            @if(count($slides) > 0)
+                <div class="slider-wrapper" id="sliderWrapper">
+                    @foreach($slides as $slide)
+                        <div class="slider-slide">
+                            <span class="angle-badge">{{ $slide['label'] }}</span>
+                            <img src="/image/{{ $slide['file'] }}" alt="{{ $product->name }}">
+                        </div>
+                    @endforeach
+                </div>
+
+                @if(count($slides) > 1)
+                    <button class="slider-btn prev" onclick="changeSlide(-1)">&#10094;</button>
+                    <button class="slider-btn next" onclick="changeSlide(1)">&#10095;</button>
+                    
+                    <div class="slider-dots">
+                        @foreach($slides as $index => $slide)
+                            <span class="dot {{ $index == 0 ? 'active' : '' }}" onclick="goToSlide({{ $index }})"></span>
+                        @endforeach
+                    </div>
+                @endif
+            @else
+                <div style="width: 100%; height: 100%; background: #1E1E1E; display: flex; align-items: center; justify-content: center; color: #C19A6B;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 50px; margin-bottom: 10px;">👟</div>
+                        <div>Detail Foto Belum Diunggah</div>
+                    </div>
+                </div>
+            @endif
         </div>
 
         <div class="product-info">
@@ -297,36 +581,94 @@
             </div>
 
             <div class="btn-group">
-                <button onclick="kirimKeWA()" class="btn">
-                    Pesan via WhatsApp
-                </button>
+                <div class="btn-main-row">
+                    <button onclick="prosesCheckout()" class="btn btn-checkout">
+                        Pesan Sekarang
+                    </button>
+
+                    <button onclick="kirimKeWA()" class="btn btn-wa">
+                        Tanya Kami
+                    </button>
+                </div>
+
                 <a href="javascript:history.back()" class="btn btn-outline">
-                    Kembali
+                    Kembali ke Katalog
                 </a>
+            </div>
+        </div>
     </div>
 
     <script>
+        // 1. Script Hamburger Menu
+        function toggleMenu() {
+            var menu = document.getElementById("nav-wrapper");
+            menu.classList.toggle("active");
+        }
+
+        // 2. Script Slider Produk
+        let currentSlideIndex = 0;
+        const totalSlides = {{ count($slides) }};
+
+        function updateSlider() {
+            const wrapper = document.getElementById('sliderWrapper');
+            if(wrapper) {
+                wrapper.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+            }
+            
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, idx) => {
+                if (idx === currentSlideIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function changeSlide(direction) {
+            currentSlideIndex += direction;
+            if (currentSlideIndex >= totalSlides) currentSlideIndex = 0;
+            if (currentSlideIndex < 0) currentSlideIndex = totalSlides - 1;
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentSlideIndex = index;
+            updateSlider();
+        }
+
+        // 3. Script Proses Checkout (Satu fungsi saja yang valid)
+        function prosesCheckout() {
+            let ukuranEl = document.querySelector('input[name="ukuran"]:checked');
+            let warnaEl = document.querySelector('input[name="warna"]:checked');
+
+            if(!ukuranEl || !warnaEl) {
+                alert("Halo! Mohon pilih Ukuran dan Warna sepatu terlebih dahulu sebelum melanjutkan ke halaman pembayaran.");
+                return;
+            }
+
+            let ukuran = ukuranEl.value;
+            let warna = warnaEl.value;
+
+            // Redirect dengan membawa data ukuran dan warna melalui URL Query Parameters
+            window.location.href = `/checkout/{{ $product->id }}?ukuran=${ukuran}&warna=${encodeURIComponent(warna)}`;
+        }
+
+        // 4. Script Kirim ke WhatsApp
         function kirimKeWA() {
-            // Mengecek kotak mana yang sedang diklik (checked)
             let ukuranEl = document.querySelector('input[name="ukuran"]:checked');
             let warnaEl = document.querySelector('input[name="warna"]:checked');
             let namaProduk = "{{ $product->name }}";
 
-            // Peringatan jika pengunjung belum mengklik salah satu kotak
-            if(!ukuranEl || !warnaEl) {
-                alert("Halo! Tolong klik/pilih Ukuran dan Warna sepatunya dulu ya sebelum memesan.");
-                return;
-            }
-
-            // Mengambil nilainya
-            let ukuran = ukuranEl.value;
-            let warna = warnaEl.value;
-
-            // Merangkai isi pesan WA
-            let pesan = `Halo Sepatu Retro! Saya tertarik dan ingin memesan sepatu ini:%0A%0A*${namaProduk}*%0A- Ukuran: ${ukuran}%0A- Warna/Tekstur: ${warna}%0A%0AApakah stoknya masih tersedia?`;
+            let pesan = "";
             
-            // Eksekusi buka WA
-            let linkWA = `https://wa.me/62895321683364?text=${pesan}`;
+            if(ukuranEl && warnaEl) {
+                pesan = `Halo Sepatu Retro! Saya ingin bertanya mengenai produk *${namaProduk}* dengan Ukuran: ${ukuranEl.value} dan Warna: ${warnaEl.value}. Apakah bisa berkonsultasi mengenai detail bahannya?`;
+            } else {
+                pesan = `Halo Sepatu Retro! Saya ingin bertanya lebih lanjut mengenai produk *${namaProduk}*. Apakah produk ini ready stock?`;
+            }
+            
+            let linkWA = `https://wa.me/{{ $product->whatsapp_phone ?? '62895321683364' }}?text=${encodeURIComponent(pesan)}`;
             window.open(linkWA, '_blank');
         }
     </script>

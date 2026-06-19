@@ -5,7 +5,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h2>📊 Dashboard</h2>
+            <h2>Dashboard</h2>
             <div>
                 <a href="{{ route('admin.products.create') }}" class="btn btn-primary">+ Tambah Produk</a>
             </div>
@@ -56,7 +56,7 @@
     <!-- Products Table -->
     <div class="card">
         <div class="card-header">
-            <h2>📦 Daftar Produk</h2>
+            <h2>Daftar Produk</h2>
         </div>
 
         @if ($products->count() > 0)
