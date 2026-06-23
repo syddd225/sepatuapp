@@ -310,8 +310,8 @@
 
         .footer-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 40px;
+            grid-template-columns: 1.5fr 1fr 1.2fr 1.8fr 1.5fr; 
+            gap: 30px;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -390,6 +390,8 @@
         @media(max-width: 768px) {
             .navbar {
                 padding: 15px 20px;
+                grid-template-columns: 1fr auto;
+                gap: 30px;
             }
 
             .navbar h2 {
@@ -544,6 +546,7 @@
         </div>
     </div>
 
+ <!-- MEGA FOOTER BARU (5 KOLOM) -->
     <div class="footer-complex" id="kontak">
         <div class="footer-grid">
 
@@ -558,7 +561,23 @@
                 <a href="/">Home</a>
                 <a href="/#tentang-kami">Tentang Kami</a>
                 <a href="/#kategori">Produk Kami</a>
-                <a href="/#kontak">Hubungi Kami</a>
+                <!-- Link Hubungi Kami sudah dihapus dari sini -->
+            </div>
+
+            <!-- KOLOM BARU: KONTAK KAMI -->
+            <div class="footer-col">
+                <h4>Kontak Kami</h4>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <a href="https://wa.me/62895321683364" target="_blank" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">
+                        <span style="font-size: 18px;">💬</span> WhatsApp
+                    </a>
+                    <a href="mailto:hello@retrocollection.com" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">
+                        <span style="font-size: 18px;">✉️</span> Email
+                    </a>
+                    <a href="#" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">
+                        <span style="font-size: 18px;">📷</span> Instagram
+                    </a>
+                </div>
             </div>
 
             <div class="footer-col">
@@ -597,7 +616,6 @@
             &copy; 2026 Retro Collection. All rights reserved.
         </div>
     </div>
-
     <script>
         function toggleMenu() {
             var menu = document.getElementById("nav-wrapper");
