@@ -267,6 +267,7 @@
             line-height: 1.8;
             margin-bottom: 15px;
             color: #aaa;
+            text-align: justify;
         }
 
         .footer-col a {
