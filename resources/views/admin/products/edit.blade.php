@@ -12,7 +12,6 @@
             @csrf
             @method('PUT')
 
-            <!-- Nama Produk -->
             <div class="form-group">
                 <label for="name">Nama Produk *</label>
                 <input 
@@ -31,7 +30,6 @@
                 <small>Nama unik yang akan ditampilkan di katalog</small>
             </div>
 
-            <!-- Deskripsi -->
             <div class="form-group">
                 <label for="description">Deskripsi *</label>
                 <textarea 
@@ -48,7 +46,6 @@
                 <small>Gunakan deskripsi yang detail untuk menarik pembeli</small>
             </div>
 
-            <!-- Harga -->
             <div class="form-group">
                 <label for="price">Harga (Rp) *</label>
                 <input 
@@ -69,7 +66,6 @@
                 <small>Harga dalam rupiah (tanpa Rp.)</small>
             </div>
 
-            <!-- Kategori -->
             <div class="form-group">
                 <label for="category_id">Kategori *</label>
                 <select id="category_id" name="category_id" required>
@@ -91,7 +87,6 @@
                 <small>Pilih kategori yang sesuai untuk produk ini</small>
             </div>
 
-            <!-- Stok -->
             <div class="form-group">
                 <label for="stock">Stok *</label>
                 <input 
@@ -111,44 +106,105 @@
                 <small>Jumlah stok tersedia. Input 0 jika produk tidak tersedia</small>
             </div>
 
-            <!-- Foto Utama -->
             <div class="form-group">
-                <label for="image">Foto Produk (JPG/PNG/WebP, Max 5MB)</label>
+                <label for="images">Foto-Foto Produk (Maksimal 3 Gambar sekaligus)</label>
+                <input 
+                    type="file" 
+                    id="images" 
+                    name="images[]" 
+                    accept="image/jpeg,image/png,image/webp"
+                    multiple
+                >
                 
-                @if ($product->image && file_exists(public_path('image/' . $product->image)))
-                    <div style="margin-bottom: 1rem;">
-                        <p style="margin-bottom: 0.5rem; color: #999;">Foto saat ini:</p>
-                        <img 
-                            src="/image/{{ $product->image }}" 
-                            alt="{{ $product->name }}"
-                            class="image-preview"
-                        >
+                @if ($errors->has('images'))
+                    <div class="error-messages">
+                        @foreach ($errors->get('images') as $err)
+                            <li>{{ $err }}</li>
+                        @endforeach
                     </div>
                 @endif
 
-                <input 
-                    type="file" 
-                    id="image" 
-                    name="image" 
-                    accept="image/jpeg,image/png,image/webp"
-                >
-                @error('image')
+                @if ($errors->has('images.*'))
                     <div class="error-messages">
-                        <li>{{ $message }}</li>
+                        @foreach ($errors->all() as $error)
+                            @if (str_contains($error, 'images.'))
+                                <li>{{ $error }}</li>
+                            @endif
+                        @endforeach
                     </div>
-                @enderror
-                <small>Upload foto baru untuk mengganti. Biarkan kosong jika tidak ingin mengubah.</small>
+                @endif
+                
+                <small style="display: block; margin-top: 5px; color: #666;">
+                    Anda bisa memilih hingga <strong>3 gambar</strong> secara bersamaan. <br>
+                    • Gambar ke-1: Menjadi Foto Utama di halaman depan.<br>
+                    • Gambar ke-2 & ke-3: Menjadi Foto Sudut Lain (Carousel Slider).<br>
+                    • <em>Kosongkan jika tidak ingin mengubah foto saat ini.</em>
+                </small>
             </div>
 
-            <!-- Bahan/Material -->
+            <div class="form-group">
+                <label>Foto Produk Aktif Saat Ini:</label>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 0.5rem;">
+                    
+                    @if ($product->image && file_exists(public_path('image/' . $product->image)))
+                        <div style="text-align: center;">
+                            <img src="/image/{{ $product->image }}" style="width: 90px; height: 90px; object-fit: cover; border-radius: 6px; border: 2px solid #C19A6B;">
+                        </div>
+                    @endif
+
+                    @if (!empty($product->images_angles))
+                        @php
+                            if (is_array($product->images_angles)) {
+                                $angles = $product->images_angles;
+                            } elseif (is_string($product->images_angles)) {
+                                $decoded = json_decode($product->images_angles, true);
+                                $angles = is_array($decoded) ? $decoded : explode(',', $product->images_angles);
+                            } else {
+                                $angles = [];
+                            }
+                        @endphp
+                        @foreach ($angles as $angle)
+                            @if (!empty(trim($angle)) && file_exists(public_path('image/' . trim($angle))))
+                                <div style="text-align: center;">
+                                    <img src="/image/{{ trim($angle) }}" style="width: 90px; height: 90px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd;">
+                                </div>
+                            @endif
+                        @endforeach
+                    @endif
+
+                </div>
+            </div>
+
             <div class="form-group">
     <label for="materials">Bahan (pisahkan dengan koma)</label>
+    @php
+        // Ambil data lama dari inputan jika gagal validasi
+        $materialsValue = old('materials');
+        
+        // Jika tidak ada data 'old', kita olah data dari database ($product)
+        if (is_null($materialsValue)) {
+            if (is_array($product->materials)) {
+                // Jika tipenya array, gabungkan dengan koma
+                $materialsValue = implode(', ', $product->materials);
+            } elseif (is_string($product->materials)) {
+                // Jika berupa string JSON, kita coba decode dulu
+                $decodedMaterials = json_decode($product->materials, true);
+                if (is_array($decodedMaterials)) {
+                    $materialsValue = implode(', ', $decodedMaterials);
+                } else {
+                    $materialsValue = $product->materials;
+                }
+            } else {
+                $materialsValue = '';
+            }
+        }
+    @endphp
     <textarea 
         id="materials" 
         name="materials" 
         placeholder="Contoh: Kulit Asli, Sol Karet Alami, Flock Lining"
         style="min-height: 100px;"
-    >{{ old('materials', @implode(', ', (array)$product->materials) ?: $product->materials) }}</textarea>
+    >{{ $materialsValue }}</textarea>
     @error('materials')
         <div class="error-messages">
             <li>{{ $message }}</li>
@@ -163,46 +219,15 @@
                     id="philosophy" 
                     name="philosophy" 
                     placeholder="Cerita dibalik produk ini, nilai-nilai yang diwakili, dll..."
-                    >{{ old('philosophy', $product->philosophy) }}</textarea>
-                    @error('philosophy')
-                <div class="error-messages">
-                <li>{{ $message }}</li>
-            </div>
+                >{{ old('philosophy', $product->philosophy) }}</textarea>
+                @error('philosophy')
+                    <div class="error-messages">
+                        <li>{{ $message }}</li>
+                    </div>
                 @enderror
                 <small>Cerita unik dan filosofi produk untuk membuat pembeli terhubung emosional</small>
             </div>
 
-        <div class="form-group">
-        <label for="images_angles">Nama File Foto Sudut Lain (pisahkan dengan koma)</label>
-        @php
-            // Mengamankan data images_angles apa pun bentuknya
-            $anglesValue = old('images_angles');
-            if (is_null($anglesValue)) {
-                if (is_array($product->images_angles)) {
-                    $anglesValue = implode(', ', $product->images_angles);
-                } elseif (is_string($product->images_angles)) {
-                    $decodedAngles = json_decode($product->images_angles, true);
-                    $anglesValue = is_array($decodedAngles) ? implode(', ', $decodedAngles) : $product->images_angles;
-                } else {
-                    $anglesValue = '';
-                }
-            }
-            @endphp
-            <textarea 
-                id="images_angles" 
-                name="images_angles" 
-                placeholder="Contoh: formal-black-side.jpg, formal-black-top.jpg, formal-black-sole.jpg"
-                style="min-height: 100px;"
-            >{{ $anglesValue }}</textarea>
-            @error('images_angles')
-                    <div class="error-messages">
-                        <li>{{ $message }}</li>
-                    </div>
-            @enderror
-                <small>Nama file foto dari sudut lain (harus sudah ada di folder /public/image). Pisahkan dengan koma.</small>
-            </div>
-
-            <!-- No WhatsApp -->
             <div class="form-group">
                 <label for="whatsapp_phone">No. WhatsApp (optional)</label>
                 <input 
@@ -220,7 +245,6 @@
                 <small>No. WhatsApp untuk inquiry produk ini (format: 62XXX...)</small>
             </div>
 
-            <!-- Buttons -->
             <div style="display: flex; gap: 1rem; margin-top: 2rem;">
                 <button type="submit" class="btn btn-primary" style="flex: 1;">
                     Simpan Perubahan
@@ -232,7 +256,6 @@
         </form>
     </div>
 
-    <!-- Danger Zone -->
     <div class="card" style="margin-top: 2rem; border-left: 4px solid #f44336;">
         <div class="card-header">
             <h2 style="color: #ef5350;">Zona Bahaya</h2>
@@ -250,4 +273,13 @@
             </button>
         </form>
     </div>
+
+    <script>
+        document.getElementById('images').addEventListener('change', function() {
+            if (this.files.length > 3) {
+                alert('Maksimal foto yang boleh diunggah adalah 3 gambar! Silakan pilih ulang.');
+                this.value = ''; // Reset inputan file
+            }
+        });
+    </script>
 @endsection

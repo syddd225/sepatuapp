@@ -522,28 +522,28 @@
         @php
             $slides = [];
             if (!empty($product->image)) {
-                $slides[] = ['file' => $product->image, 'label' => 'Tampak Utama'];
+                // Teks 'Tampak Utama' dikosongkan
+                $slides[] = ['file' => $product->image, 'label' => ''];
             }
 
             if (!empty($product->images_angles)) {
                 $anglesArray = is_array($product->images_angles) ? $product->images_angles : explode(',', $product->images_angles);
-                $index = 1;
                 foreach ($anglesArray as $angleFile) {
                     $angleFileClean = trim($angleFile);
                     if (!empty($angleFileClean)) {
                         $slides[] = [
                             'file' => $angleFileClean,
-                            'label' => 'Sudut Pandang ' . $index
+                            'label' => '' // Teks 'Sudut Pandang X' dikosongkan
                         ];
-                        $index++;
                     }
                 }
             }
 
             // Fallback dinamis jika data multi-angle kosong agar tetap menampilkan carousel premium
             if (count($slides) <= 1 && !empty($product->image)) {
-                $slides[] = ['file' => $product->image, 'label' => 'Detail Samping'];
-                $slides[] = ['file' => $product->image, 'label' => 'Detail Material'];
+                // Teks detail dikosongkan
+                $slides[] = ['file' => $product->image, 'label' => ''];
+                $slides[] = ['file' => $product->image, 'label' => ''];
             }
             $slides = array_slice($slides, 0, 4);
         @endphp
@@ -554,7 +554,6 @@
                     <div class="slider-wrapper" id="sliderWrapper">
                         @foreach($slides as $slide)
                             <div class="slider-slide">
-                                <span class="angle-badge">{{ $slide['label'] }}</span>
                                 <img src="/image/{{ $slide['file'] }}" alt="{{ $product->name }}">
                             </div>
                         @endforeach
