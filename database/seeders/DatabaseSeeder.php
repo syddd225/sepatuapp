@@ -54,9 +54,9 @@ class DatabaseSeeder extends Seeder
     private function createFormalProducts(Category $category): void
     {
         $formalShoes = [
-            ['name' => 'Retro Oxford Dark Brown', 'description' => 'Sepatu formal coklat tua dengan desain clean, nyaman untuk penggunaan harian.', 'price' => 320000.00, 'image' => 'formalcoklattua.jpeg', 'stock' => 5],
-            ['name' => 'Retro Oxford Black', 'description' => 'Sepatu formal hitam dengan tampilan rapi dan sederhana, cocok untuk acara formal.', 'price' => 330000.00, 'image' => 'formalhitam.jpeg', 'stock' => 8],
-            ['name' => 'Retro Derby Brown', 'description' => 'Sepatu formal coklat dengan desain santai, cocok untuk semi formal.', 'price' => 300000.00, 'image' => 'sepatuformalcoklat.jpeg', 'stock' => 6],
+            ['name' => 'Retro Oxford Dark Brown', 'description' => 'Sepatu formal coklat tua dengan desain clean, nyaman untuk penggunaan harian.', 'price' => 320000.00, 'image' => 'sepatu-1.1.png', 'stock' => 5],
+            ['name' => 'Retro Oxford Black', 'description' => 'Sepatu formal hitam dengan tampilan rapi dan sederhana, cocok untuk acara formal.', 'price' => 330000.00, 'image' => 'sepatu-2.1.png', 'stock' => 8],
+            ['name' => 'Retro Derby Brown', 'description' => 'Sepatu formal coklat dengan desain santai, cocok untuk semi formal.', 'price' => 300000.00, 'image' => 'sepatu-3.2.png', 'stock' => 6],
             ['name' => 'Retro Brogue Heritage Tan', 'description' => 'Sepatu brogue bermotif perforasi wingtip klasik, memberikan kesan vintage Inggris yang sangat kuat.', 'price' => 355000.00, 'image' => 'formalcoklattua.jpeg', 'stock' => 7],
             ['name' => 'Retro Single Monk Strap Black', 'description' => 'Sepatu monk strap tunggal dengan buckle stainless steel, tampil maskulin dan elegan tanpa tali.', 'price' => 340000.00, 'image' => 'formalhitam2.jpeg', 'stock' => 4],
             ['name' => 'Retro Penny Loafer Mahogany', 'description' => 'Loafer kasual-formal tanpa tali dengan warna kayu mahoni yang anggun, mudah dipakai.', 'price' => 310000.00, 'image' => 'sepatuformalcoklat.jpeg', 'stock' => 10],
