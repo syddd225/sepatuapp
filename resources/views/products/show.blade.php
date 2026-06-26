@@ -45,6 +45,20 @@
             margin: 0;
         }
 
+        /* PERBAIKAN LINK BRAND AGAR TETAP PUTIH DAN TANPA UNDERLINE */
+        .navbar h2 a {
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+        .navbar h2 a:visited, 
+        .navbar h2 a:hover, 
+        .navbar h2 a:focus, 
+        .navbar h2 a:active {
+            color: white !important;
+            text-decoration: none !important;
+        }
+
         .nav-wrapper {
             display: flex;
             align-items: center;
@@ -486,7 +500,7 @@
 <body>
 
     <div class="navbar">
-        <h2>Retro Collection</h2>
+        <h2><a href="/">Retro Collection</a></h2>
 
         <div class="menu-toggle" id="mobile-menu" onclick="toggleMenu()">
             <span></span>

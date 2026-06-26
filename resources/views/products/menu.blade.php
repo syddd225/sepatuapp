@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -41,6 +41,20 @@
             color: white;
             font-size: 24px;
             margin: 0;
+        }
+
+        /* PERBAIKAN LINK BRAND AGAR TETAP PUTIH DAN TANPA UNDERLINE */
+        .navbar h2 a {
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+        .navbar h2 a:visited, 
+        .navbar h2 a:hover, 
+        .navbar h2 a:focus, 
+        .navbar h2 a:active {
+            color: white !important;
+            text-decoration: none !important;
         }
 
         /* WRAPPER MENU KANAN (Desktop) */
@@ -462,7 +476,7 @@
 <body>
 
     <div class="navbar">
-        <h2>Retro Collection</h2>
+        <h2><a href="/">Retro Collection</a></h2>
 
         <div class="menu-toggle" id="mobile-menu" onclick="toggleMenu()">
             <span></span>
@@ -546,8 +560,7 @@
         </div>
     </div>
 
- <!-- MEGA FOOTER BARU (5 KOLOM) -->
-    <div class="footer-complex" id="kontak">
+ <div class="footer-complex" id="kontak">
         <div class="footer-grid">
 
             <div class="footer-col">
@@ -561,21 +574,19 @@
                 <a href="/">Home</a>
                 <a href="/#tentang-kami">Tentang Kami</a>
                 <a href="/#kategori">Produk Kami</a>
-                <!-- Link Hubungi Kami sudah dihapus dari sini -->
-            </div>
+                </div>
 
-            <!-- KOLOM BARU: KONTAK KAMI -->
             <div class="footer-col">
                 <h4>Kontak Kami</h4>
                 <div style="display: flex; flex-direction: column; gap: 12px;">
                     <a href="https://wa.me/62895321683364" target="_blank" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">
-                        <span style="font-size: 18px;">💬</span> WhatsApp
+                        <span style="font-size: 18px;">📲</span> WhatsApp
                     </a>
                     <a href="mailto:hello@retrocollection.com" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">
                         <span style="font-size: 18px;">✉️</span> Email
                     </a>
                     <a href="#" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">
-                        <span style="font-size: 18px;">📷</span> Instagram
+                        <span style="font-size: 18px;">📸</span> Instagram
                     </a>
                 </div>
             </div>
