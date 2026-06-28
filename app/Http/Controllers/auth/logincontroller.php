@@ -11,16 +11,6 @@ use Illuminate\Support\Facades\Hash;
 class LoginController extends Controller
 {
     /**
-     * Konstruktor Pengaman: Mengizinkan akses ke halaman login/register saja,
-     * sisanya wajib melewati autentikasi.
-     */
-    public function __construct()
-    {
-        // Mengizinkan tamu yang belum login hanya untuk melihat form login/register dan memprosesnya
-        $this->middleware('guest')->except('logout');
-    }
-
-    /**
      * Memproses autentikasi login pembeli
      */
     public function login(Request $request)
@@ -37,14 +27,13 @@ class LoginController extends Controller
 
         // 2. Coba Lakukan Login (Attempt)
         if (Auth::attempt($credentials)) {
-            // Regenerasi session untuk keamanan dari Session Fixation
             $request->session()->regenerate();
 
-            // Alihkan user ke halaman utama etalase produk setelah sukses login
-            return redirect()->intended('/')->with('success', 'Selamat datang kembali, ' . Auth::user()->name . '!');
+            // Sesuai arahan: dialihkan ke halaman yang sedang ingin diakses (misal halaman checkout tadi)
+            return redirect()->intended('/');
         }
 
-        // 3. Jika Login Gagal (Sandi salah), lempar balik ke login dan CEGAH masuk ke web
+        // 3. Jika Login Gagal
         return back()->withErrors([
             'email' => 'Email atau password yang Anda masukkan salah. Akses ke situs ditolak.',
         ])->onlyInput('email');
@@ -82,11 +71,11 @@ class LoginController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // 3. Otomatis Login setelah Berhasil Daftar dengan validasi yang sah
+        // 3. Otomatis Login setelah Berhasil Daftar
         Auth::login($user);
 
         // 4. Alihkan ke halaman utama
-        return redirect('/')->with('success', 'Akun berhasil dibuat! Selamat berbelanja dengan aman.');
+        return redirect('/');
     }
 
     /**
@@ -96,10 +85,10 @@ class LoginController extends Controller
     {
         Auth::logout();
 
-        // Hancurkan session lama agar bersih
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login')->with('success', 'Anda telah berhasil keluar.');
+        // Kembali bersih ke halaman login tanpa membawa flash message sukses
+        return redirect('/login');
     }
 }
