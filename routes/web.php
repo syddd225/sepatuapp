@@ -11,14 +11,17 @@ use App\Http\Controllers\Auth\LoginController;
  * RESTful endpoints for browsing and interacting with products
  */
 
-// Home: Display all categories
-Route::get('/', [ProductController::class, 'index'])->name('products.index');
+// Membungkus halaman isi web dengan middleware auth agar user yang belum login terproteksi
+Route::middleware(['auth'])->group(function () {
+    // Home: Display all categories
+    Route::get('/', [ProductController::class, 'index'])->name('products.index');
 
-// Category: Display products by category
-Route::get('/category/{id}', [ProductController::class, 'byCategory'])->name('products.byCategory');
+    // Category: Display products by category
+    Route::get('/category/{id}', [ProductController::class, 'byCategory'])->name('products.byCategory');
 
-// Product Detail: Show single product with multiple angles
-Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
+    // Product Detail: Show single product with multiple angles
+    Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
+});
 
 // WhatsApp Inquiry: Generate pre-filled WhatsApp link (AJAX)
 Route::post('/product/{id}/whatsapp', [ProductController::class, 'generateWhatsAppLink'])->name('products.whatsapp');
@@ -31,7 +34,7 @@ Route::get('/cek-db', function () {
 
 /**
  * =============================================================
- * USER / CUSTOMER AUTHENTICATION ROUTES (TAMBAHAN BARU)
+ * USER / CUSTOMER AUTHENTICATION ROUTES
  * =============================================================
  */
 
@@ -43,20 +46,18 @@ Route::get('/login', function () {
 // 2. Memproses Data Login Pembeli saat tombol "Masuk Sekarang" diklik
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 
-// 3. Memproses Data Registrasi Pembeli saat tombol "Buat Akun & Join" diklik
-Route::post('/register', [LoginController::class, 'register'])->name('register');
+// 3. Memproses Pendaftaran Pembeli Baru saat tombol "Buat Akun & Join" diklik
+Route::post('/register', [LoginController::class, 'register'])->name('register.submit');
 
-// 4. Memproses Logout Pembeli
+// 4. Memproses Keluar Sistem (Logout) Pembeli
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-// 5. Halaman Checkout (Hanya bisa diakses jika pembeli sudah login)
-Route::get('/checkout/{id}', [CheckoutController::class, 'index'])->middleware('auth');
 
 
 /**
- * Admin Panel Routes
- * CRUD operations untuk product management
- * Simple password-based authentication
+ * =============================================================
+ * BACKEND ADMINISTRATIVE PANEL ROUTES (ADMIN ONLY)
+ * =============================================================
+ * Protected workspace reserved for master artisans and administrators to manage authentication
  */
 
 Route::prefix('admin')->name('admin.')->group(function () {
