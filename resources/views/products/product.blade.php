@@ -522,7 +522,7 @@
             </div>
 
             <div class="footer-col">
-                <h4>Alamat Kantor & Workshop</h4>
+                <h4>Alamat Kantor</h4>
                 <div style="display: flex; gap: 12px; align-items: flex-start;">
                     <span style="font-size: 18px;">📍</span>
                     <p style="margin: 0;">

@@ -582,7 +582,7 @@
                     <a href="https://wa.me/62895321683364" target="_blank" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">
                         <span style="font-size: 18px;">📲</span> WhatsApp
                     </a>
-                    <a href="mailto:hello@retrocollection.com" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">
+                    <a href="mailto:rasyadachmad17@gmail.com" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">
                         <span style="font-size: 18px;">✉️</span> Email
                     </a>
                     <a href="#" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">
@@ -592,7 +592,7 @@
             </div>
 
             <div class="footer-col">
-                <h4>Alamat Kantor & Workshop</h4>
+                <h4>Alamat Kantor</h4>
                 <div style="display: flex; gap: 12px; align-items: flex-start;">
                     <span style="font-size: 18px;">📍</span>
                     <p style="margin: 0;">
