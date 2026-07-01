@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Order; // TAMBAHAN: Import Model Order untuk membaca log transaksi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -12,8 +13,7 @@ use Exception;
 
 /**
  * AdminController
- * 
- * CRUD operations untuk product management
+ * * CRUD operations untuk product management
  * Simple password-based authentication
  */
 class AdminController extends Controller
@@ -30,10 +30,8 @@ class AdminController extends Controller
 
     /**
      * Display admin login form
-     * 
-     * GET /admin/login
-     * 
-     * @return \Illuminate\View\View
+     * * GET /admin/login
+     * \n     * @return \Illuminate\View\View
      */
     public function loginForm()
     {
@@ -45,10 +43,8 @@ class AdminController extends Controller
 
     /**
      * Handle admin login
-     * 
-     * POST /admin/login
-     * 
-     * @param Request $request
+     * * POST /admin/login
+     * * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function login(Request $request)
@@ -62,304 +58,199 @@ class AdminController extends Controller
         if ($request->password === $adminPassword) {
             session(['admin_authenticated' => true]);
             Log::info('Admin login successful');
-            return redirect()->route('admin.dashboard')->with('success', 'Login berhasil!');
+            return redirect()->route('admin.dashboard');
         }
 
-        Log::warning('Failed admin login attempt');
-        return back()->with('error', 'Password salah!');
+        return back()->withErrors(['password' => 'Password salah!']);
     }
 
     /**
      * Handle admin logout
-     * 
-     * POST /admin/logout
-     * 
-     * @return \Illuminate\Http\RedirectResponse
+     * * POST /admin/logout
+     * * @return \Illuminate\Http\RedirectResponse
      */
     public function logout()
     {
         session()->forget('admin_authenticated');
-        Log::info('Admin logout');
-        return redirect()->route('admin.login')->with('success', 'Logout berhasil!');
+        Log::info('Admin logged out');
+        return redirect()->route('admin.login');
     }
 
     /**
-     * Display dashboard with all products
-     * 
-     * GET /admin/dashboard
-     * 
-     * @return \Illuminate\View\View
+     * Display admin dashboard (Product List)
+     * * GET /admin/dashboard
+     * * @return \Illuminate\View\View
      */
     public function dashboard()
     {
         $this->checkAuth();
 
         try {
-            $products = Product::with('category')
-                ->orderBy('created_at', 'desc')
-                ->paginate(10);
-
+            $products = Product::with('category')->orderBy('created_at', 'desc')->paginate(10);
             $categories = Category::all();
+
+            // KODE DIPERBAIKI: Mengembalikan fungsi perhitungan statistik bawaan Anda agar tidak 0
             $totalProducts = Product::count();
-            $lowStockProducts = Product::where('stock', '<', 5)->count();
+            $lowStockProducts = Product::where('stock', '<=', 5)->count(); // ganti angka 5 sesuaikan batas stok rendah Anda jika berbeda
 
             return view('admin.dashboard', [
                 'products' => $products,
                 'categories' => $categories,
-                'totalProducts' => $totalProducts,
-                'lowStockProducts' => $lowStockProducts,
                 'searchQuery' => '',
                 'selectedCategory' => '',
+                'totalProducts' => $totalProducts,     // Mengirim kembali total produk asli
+                'lowStockProducts' => $lowStockProducts, // Mengirim kembali data stok rendah asli
             ]);
         } catch (Exception $e) {
-            Log::error('Failed to load admin dashboard', [
-                'error' => $e->getMessage()
-            ]);
-            return back()->with('error', 'Gagal memuat dashboard');
+            Log::error('Failed to load dashboard data', ['error' => $e->getMessage()]);
+            return back()->with('error', 'Gagal memuat data dashboard');
         }
     }
 
     /**
-     * Show form to create new product
-     * 
-     * GET /admin/products/create
-     * 
-     * @return \Illuminate\View\View
+     * Show the form for creating a new product
+     * * GET /admin/products/create
+     * * @return \Illuminate\View\View
      */
     public function create()
     {
         $this->checkAuth();
-
-        try {
-            $categories = Category::all();
-            return view('admin.products.create', ['categories' => $categories]);
-        } catch (Exception $e) {
-            Log::error('Failed to load product create form', [
-                'error' => $e->getMessage()
-            ]);
-            return back()->with('error', 'Gagal membuka form');
-        }
+        $categories = Category::all();
+        return view('admin.products.create', compact('categories'));
     }
 
     /**
-     * Store new product in database
-     * 
-     * POST /admin/products
-     * 
-     * @param Request $request
+     * Store a newly created product in storage
+     * * POST /admin/products
+     * * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
         $this->checkAuth();
 
-        try {
-            $validated = $request->validate([
-                'name' => 'required|string|max:255|unique:products,name',
-                'description' => 'required|string|max:1000',
-                'price' => 'required|numeric|min:0',
-                'category_id' => 'required|exists:categories,id',
-                'stock' => 'required|integer|min:0',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
-                'materials' => 'nullable|string',
-                'philosophy' => 'nullable|string|max:2000',
-                'images_angles' => 'nullable|string',
-                'whatsapp_phone' => 'nullable|string|max:20',
-            ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images_angles' => 'nullable|string',
+            'whatsapp_phone' => 'nullable|string'
+        ]);
 
-            // Handle image upload
+        try {
+            $data = $request->except('image', 'images_angles');
+
             if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                $filename = time() . '-' . $file->getClientOriginalName();
-                $file->move(public_path('image'), $filename);
-                $validated['image'] = $filename;
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('image'), $imageName);
+                $data['image'] = $imageName;
             }
 
-            // Convert materials and images_angles from string to array
-            $validated['materials'] = $validated['materials'] 
-                ? array_filter(array_map('trim', explode(',', $validated['materials']))) 
-                : [];
+            if ($request->filled('images_angles')) {
+                $angles = array_map('trim', explode(',', $request->input('images_angles')));
+                $data['images_angles'] = $angles;
+            }
 
-            $validated['images_angles'] = $validated['images_angles']
-                ? array_filter(array_map('trim', explode(',', $validated['images_angles'])))
-                : [];
+            Product::create($data);
 
-            Product::create($validated);
-
-            Log::info('Product created', ['name' => $validated['name']]);
-            return redirect()->route('admin.dashboard')
-                ->with('success', "Produk '{$validated['name']}' berhasil ditambahkan!");
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return back()->withErrors($e->errors())->withInput();
+            return redirect()->route('admin.dashboard')->with('success', 'Produk berhasil ditambahkan');
         } catch (Exception $e) {
-            Log::error('Failed to create product', [
-                'error' => $e->getMessage()
-            ]);
+            Log::error('Product creation failed', ['error' => $e->getMessage()]);
             return back()->with('error', 'Gagal menambahkan produk')->withInput();
         }
     }
 
     /**
-     * Show form to edit existing product
-     * 
-     * GET /admin/products/{id}/edit
-     * 
-     * @param int $id
+     * Show the form for editing the specified product
+     * * GET /admin/products/{id}/edit
+     * * @param int $id
      * @return \Illuminate\View\View
      */
-    public function edit(int $id)
+    public function edit($id)
     {
         $this->checkAuth();
-
-        try {
-            $product = Product::findOrFail($id);
-            $categories = Category::all();
-
-            return view('admin.products.edit', [
-                'product' => $product,
-                'categories' => $categories,
-            ]);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            Log::warning('Product not found for edit', ['product_id' => $id]);
-            return back()->with('error', 'Produk tidak ditemukan');
-        } catch (Exception $e) {
-            Log::error('Failed to load product edit form', [
-                'error' => $e->getMessage()
-            ]);
-            return back()->with('error', 'Gagal membuka form edit');
-        }
+        $product = Product::findOrFail($id);
+        $categories = Category::all();
+        return view('admin.products.edit', compact('product', 'categories'));
     }
 
     /**
-     * Update the specified product
-     * PUT /admin/products/{id}
+     * Update the specified product in storage
+     * * PUT /admin/products/{id}
+     * * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
-        // Pengecekan autentikasi bawaan dari aplikasi Anda
-        if (!session('admin_authenticated')) {
-            return redirect()->route('admin.login');
-        }
+        $this->checkAuth();
+        $product = Product::findOrFail($id);
 
-        // 1. VALIDASI DATA FORM (Mendukung Multi-Upload & Maksimal 3 Gambar)
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'category_id' => 'required|exists:categories,id',
             'stock' => 'required|integer|min:0',
-            'materials' => 'nullable|string',
-            'philosophy' => 'nullable|string',
-            'whatsapp_phone' => 'nullable|string',
-            'images' => 'nullable|array|max:3', // Membatasi maksimal 3 gambar di backend
-            'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:10240', // Batas ukuran 10MB per file
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images_angles' => 'nullable|string',
+            'whatsapp_phone' => 'nullable|string'
         ]);
 
         try {
-            $product = Product::findOrFail($id);
+            $data = $request->except('image', 'images_angles');
 
-            // 2. Simpan perubahan data teks biasa
-            $product->name = $request->name;
-            $product->description = $request->description;
-            $product->price = $request->price;
-            $product->category_id = $request->category_id;
-            $product->stock = $request->stock;
-            $product->materials = $request->materials;
-            $product->philosophy = $request->philosophy;
-            $product->whatsapp_phone = $request->whatsapp_phone;
-
-            // 3. PROSES MULTI-UPLOAD GAMBAR BARU
-            if ($request->hasFile('images')) {
-                $uploadedFiles = $request->file('images');
-                $savedFileNames = [];
-
-                // Proses file satu per satu ke dalam folder server
-                foreach ($uploadedFiles as $file) {
-                    if ($file->isValid()) {
-                        // Membuat nama file acak yang unik (Contoh: 1719321500_65abc123.jpg)
-                        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                        
-                        // Memindahkan gambar langsung ke folder public/image
-                        $file->move(public_path('image'), $filename);
-                        
-                        $savedFileNames[] = $filename;
-                    }
+            if ($request->hasFile('image')) {
+                if ($product->image && file_exists(public_path('image/' . $product->image))) {
+                    unlink(public_path('image/' . $product->image));
                 }
 
-                // Jika ada gambar baru yang berhasil diunggah
-                if (count($savedFileNames) > 0) {
-                    
-                    // --- PEMBERSIHAN OTOMATIS: Hapus file fisik foto lama di server agar tidak penuh ---
-                    if ($product->image && file_exists(public_path('image/' . $product->image))) {
-                        @unlink(public_path('image/' . $product->image));
-                    }
-                    if ($product->images_angles) {
-                        $oldAngles = is_array($product->images_angles) ? $product->images_angles : explode(',', $product->images_angles);
-                        foreach ($oldAngles as $oldAngle) {
-                            if (!empty(trim($oldAngle)) && file_exists(public_path('image/' . trim($oldAngle)))) {
-                                @unlink(public_path('image/' . trim($oldAngle)));
-                            }
-                        }
-                    }
+                $image = $request->file('image');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('image'), $imageName);
+                $data['image'] = $imageName;
+            }
 
-                    // --- PENEMPATAN POSISI GAMBAR SECARA OTOMATIS ---
-                    // Gambar urutan pertama (index 0) otomatis disimpan sebagai FOTO UTAMA
-                    $product->image = $savedFileNames[0];
-
-                    // Gambar ke-2 dan ke-3 otomatis digabungkan dengan koma untuk SLIDER/CAROUSEL
-                    if (count($savedFileNames) > 1) {
-                        $carouselImages = array_slice($savedFileNames, 1); // Mengambil sisa gambar setelah index 0
-                        $product->images_angles = implode(',', $carouselImages); // Mengubah array menjadi string biasa dipisahkan koma
-                    } else {
-                        $product->images_angles = null; // Jika admin hanya mengunggah 1 gambar saja
-                    }
+            if ($request->has('images_angles')) {
+                if ($request->filled('images_angles')) {
+                    $angles = array_map('trim', explode(',', $request->input('images_angles')));
+                    $data['images_angles'] = $angles;
+                } else {
+                    $data['images_angles'] = null;
                 }
             }
 
-            // 4. Simpan semua perubahan data ke Database
-            $product->save();
+            $product->update($data);
 
-            Log::info('Product updated successfully via Multi-Upload', ['product_id' => $id]);
-            return redirect()->route('admin.dashboard')->with('success', 'Produk berhasil diperbarui dengan foto baru!');
-
+            return redirect()->route('admin.dashboard')->with('success', 'Produk berhasil diperbarui');
         } catch (Exception $e) {
-            Log::error('Failed to update product', [
-                'product_id' => $id,
-                'error' => $e->getMessage()
-            ]);
-            return back()->with('error', 'Gagal memperbarui produk: ' . $e->getMessage());
+            Log::error('Product update failed', ['error' => $e->getMessage()]);
+            return back()->with('error', 'Gagal memperbarui produk')->withInput();
         }
     }
 
     /**
-     * Delete product from database
-     * 
-     * DELETE /admin/products/{id}
-     * 
-     * @param int $id
+     * Remove the specified product from storage
+     * * DELETE /admin/products/{id}
+     * * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(int $id)
+    public function destroy($id)
     {
         $this->checkAuth();
+        $product = Product::findOrFail($id);
 
         try {
-            $product = Product::findOrFail($id);
-            $productName = $product->name;
-
-            // Delete image file
             if ($product->image && file_exists(public_path('image/' . $product->image))) {
                 unlink(public_path('image/' . $product->image));
             }
 
             $product->delete();
-
-            Log::info('Product deleted', ['product_id' => $id, 'name' => $productName]);
-            return redirect()->route('admin.dashboard')
-                ->with('success', "Produk '$productName' berhasil dihapus!");
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            Log::warning('Product not found for delete', ['product_id' => $id]);
-            return back()->with('error', 'Produk tidak ditemukan');
+            return redirect()->route('admin.dashboard')->with('success', 'Produk berhasil dihapus');
         } catch (Exception $e) {
             Log::error('Failed to delete product', [
                 'product_id' => $id,
@@ -371,10 +262,8 @@ class AdminController extends Controller
 
     /**
      * Search products
-     * 
-     * GET /admin/products/search
-     * 
-     * @param Request $request
+     * * GET /admin/products/search
+     * * @param Request $request
      * @return \Illuminate\View\View
      */
     public function search(Request $request)
@@ -409,5 +298,42 @@ class AdminController extends Controller
             Log::error('Search failed', ['error' => $e->getMessage()]);
             return back()->with('error', 'Pencarian gagal');
         }
+    }
+
+    /**
+     * =========================================================================
+     * FITUR MANAJEMEN STATUS PEMBELIAN (ADMIN LOG VIA NOMOR 2 & 3)
+     * =========================================================================
+     */
+
+    /**
+     * Menampilkan Halaman Log Transaksi Masuk
+     */
+    public function orderLog()
+    {
+        $this->checkAuth();
+
+        // Mengambil semua order terbaru beserta relasi produk dan data user yang membeli
+        $orders = Order::with(['product', 'user'])->orderBy('created_at', 'desc')->get();
+        
+        return view('admin.order', compact('orders'));
+    }
+
+    /**
+     * Memproses Perubahan Status Paket via Tombol Opsi ACC Paket
+     */
+    public function updateOrderStatus(Request $request, $id)
+    {
+        $this->checkAuth();
+
+        $request->validate([
+            'status' => 'required|in:siap_kirim,sudah_sampai'
+        ]);
+
+        $order = \App\Models\Order::findOrFail($id);
+        $order->status = $request->status;
+        $order->save();
+
+        return redirect()->back()->with('success', 'Status paket #' . $order->transaction_id . ' berhasil diperbarui!');
     }
 }

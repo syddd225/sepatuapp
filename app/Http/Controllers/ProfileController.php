@@ -7,11 +7,18 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
-    // Menampilkan halaman akun
+    // Menampilkan halaman akun beserta riwayat pesanan user
     public function index()
     {
         $user = Auth::user();
-        return view('akun', compact('user'));
+        
+        // KODE DISESUAIKAN: Mengambil semua data transaksi user untuk dipilah di halaman akun
+        $orders = \App\Models\Order::with('product')
+                    ->where('user_id', $user->id)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        return view('akun', compact('user', 'orders'));
     }
 
     // Memproses form edit profil

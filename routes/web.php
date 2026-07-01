@@ -39,29 +39,34 @@ Route::get('/cek-db', function () {
 
 // 1. Menampilkan halaman Form Login & Register Pembeli
 Route::get('/login', function () {
-    return view('auth.login');
+    if (auth()->check()) {
+        return redirect()->route('products.index');
+    }
+    return view('auth.login'); 
 })->name('login');
 
-// 2. Memproses Data Login Pembeli saat tombol "Masuk Sekarang" diklik
+// 2. Memproses data Login Pembeli
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 
-// 3. Memproses Pendaftaran Pembeli Baru saat tombol "Buat Akun & Join" diklik
+// 3. Memproses data Register Pembeli Baru
 Route::post('/register', [LoginController::class, 'register'])->name('register.submit');
 
-// 4. Memproses Keluar Sistem (Logout) Pembeli
+// 4. Memproses Logout Pembeli
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 /**
  * =============================================================
- * BACKEND ADMINISTRATIVE PANEL ROUTES (ADMIN ONLY)
+ * ADMIN PANEL AUTHENTICATION & MANAGEMENT ROUTES
  * =============================================================
  */
 Route::prefix('admin')->name('admin.')->group(function () {
+    // Guest Admin Routes
     Route::get('/login', [AdminController::class, 'loginForm'])->name('login');
     Route::post('/login', [AdminController::class, 'login'])->name('login.submit');
 
-    Route::middleware('web')->group(function () {
+    // Protected Admin Routes (Simple Session-Based)
+    Route::middleware(['web'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         Route::get('/products/create', [AdminController::class, 'create'])->name('products.create');
         Route::post('/products', [AdminController::class, 'store'])->name('products.store');
@@ -75,11 +80,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 /**
  * KODE DIUBAH: Hanya halaman Checkout / Transaksi Belanja 
- * yang dikunci ketat menggunakan middleware auth.
+ * yang dikunci ketat menggunakan middleware auth Ramshoes.
  */
 Route::middleware(['auth'])->group(function () {
     Route::get('/checkout/{id}', [CheckoutController::class, 'index']);
     Route::post('/checkout/{id}/complete',[CheckoutController::class, 'complete' ])->name('checkout.complete');
     Route::get('/akun', [ProfileController::class, 'index'])->name('akun');
     Route::post('/akun/update', [ProfileController::class, 'update'])->name('akun.update');
+});
+
+// Di dalam routes/web.php -> Route::prefix('admin')->...
+Route::middleware('web')->group(function () {
+    // ... rute dashboard dan crud produk yang sudah ada ...
+
+    // KODE DISESUAIKAN: Mengubah rute menjadi tunggal '/admin/order' sesuai file order.blade.php Anda
+    Route::get('/admin/order', [AdminController::class, 'orderLog'])->name('admin.orders.index');
+    Route::post('/admin/order/{id}/update-status', [AdminController::class, 'updateOrderStatus'])->name('admin.orders.updateStatus');
 });

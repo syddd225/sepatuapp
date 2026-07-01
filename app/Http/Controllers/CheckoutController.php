@@ -50,32 +50,28 @@ class CheckoutController extends Controller
         $product->stock -= $qty;
         $product->save();
 
-        $shippingTier = $request->input('shipping_tier', 'hemat');
-        $useVoucher = $request->has('use_voucher') || $request->input('use_voucher') == '1';
-        $paymentMethod = $request->input('payment_method', 'transfer');
-
-        // Kalkulasi rincian harga
-        $totalItemPrice = $product->price * $qty;
-        $baseDeliveryFee = ($qty === 1) ? 10000 : 12000;
+        // Tangkap data shipping & voucher dari request
+        $shippingTier = $request->input('shipping_tier', 'regular');
+        $shippingName = $request->input('shipping_name', 'J&T Express');
+        $shippingEstimation = $request->input('shipping_estimation', '2-3 Hari');
         
-        $shippingTierFee = 5000;
-        $shippingName = 'Hemat Kargo';
-        $shippingEstimation = 'Estimasi tiba dalam 5-8 hari kerja';
-        if ($shippingTier === 'reguler') {
-            $shippingTierFee = 8000;
-            $shippingName = 'Reguler Standard';
-            $shippingEstimation = 'Estimasi tiba dalam 2-4 hari kerja';
-        } elseif ($shippingTier === 'prioritas') {
-            $shippingTierFee = 10000;
-            $shippingName = 'Prioritas Ekspres';
-            $shippingEstimation = 'Estimasi tiba dalam 1-2 hari kerja';
-        }
+        $baseDeliveryFee = floatval($request->input('base_delivery_fee', 10000));
+        $shippingTierFee = floatval($request->input('shipping_tier_fee', 0));
+        $totalShippingCost = floatval($request->input('total_shipping_cost', 10000));
 
-        $totalShippingCost = $baseDeliveryFee + $shippingTierFee;
-        $voucherDiscount = $useVoucher ? $totalShippingCost : 0;
-        $grandTotal = $totalItemPrice + $totalShippingCost - $voucherDiscount;
+        // KODE DISESUAIKAN: Mengubah nilai default '-' menjadi 0 agar tidak memicu SQL Error 1366 Integer
+        $useVoucher = $request->input('use_voucher', 0);
+        $voucherDiscount = floatval($request->input('voucher_discount', 0));
+        $paymentMethod = $request->input('payment_method', 'cod');
 
-        // Generate Transaction ID unik
+        // Hitung total harga produk asli
+        $totalProductPrice = $product->price * $qty;
+
+        // Grand Total = (Total Produk - Diskon Voucher) + Total Ongkir
+        $grandTotal = ($totalProductPrice - $voucherDiscount) + $totalShippingCost;
+        if ($grandTotal < 0) $grandTotal = 0;
+
+        // Generate ID Transaksi Unik secara otomatis (Contoh: RC-20231025-00123)
         $transactionId = 'RC-' . now()->timezone('Asia/Jakarta')->format('Ymd') . '-' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
         $transactionDate = now()->timezone('Asia/Jakarta')->translatedFormat('d F Y H:i') . ' WIB';
 
@@ -96,6 +92,7 @@ class CheckoutController extends Controller
             'voucher_discount' => $voucherDiscount,
             'payment_method' => $paymentMethod,
             'grand_total' => $grandTotal,
+            'status'=> 'diproses',
         ]);
 
         return view('products.receipt', compact(
@@ -114,8 +111,7 @@ class CheckoutController extends Controller
             'paymentMethod',
             'grandTotal',
             'transactionId',
-            'transactionDate',
-            'order'
+            'transactionDate'
         ));
     }
 }

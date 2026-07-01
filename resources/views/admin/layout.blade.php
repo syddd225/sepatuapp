@@ -387,7 +387,7 @@
                 <h1>Admin Panel</h1>
                 <nav class="admin-nav">
                     <a href="{{ route('admin.dashboard') }}">Dashboard</a>
-                    <a href="{{ route('admin.products.create') }}">+ Produk Baru</a>
+                    <a href="{{ route('admin.orders.index') }}" class="nav-link {{ Request::routeIs('admin.orders.index') ? 'active' : '' }}"> Aktivitas & Status Transaksi</a>
                     <form action="{{ route('admin.logout') }}" method="POST" style="display: inline;">
                         @csrf
                         <button type="submit" class="logout-btn">Logout</button>

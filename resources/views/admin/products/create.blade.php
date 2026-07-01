@@ -5,7 +5,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h2>➕ Tambah Produk Baru</h2>
+            <h2>Tambah Produk Baru</h2>
         </div>
 
         <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
