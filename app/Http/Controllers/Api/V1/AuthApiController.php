@@ -38,11 +38,13 @@ class AuthApiController extends Controller
             $validated = $request->validated();
 
             // Buat user baru
-            $user = User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-            ]);
+            
+           $user = User::create([
+    'name' => $validated['name'],
+    'email' => $validated['email'],
+    'phone' => $validated['phone'],
+    'password' => Hash::make($validated['password']),
+]);
 
             // Generate token
             $token = $user->createToken('auth-token')->plainTextToken;

@@ -88,6 +88,7 @@
         .auth-links {
             display: flex;
             align-items: center;
+            gap: 30px;
         }
 
         .btn-login {
@@ -494,6 +495,9 @@
 
             <div class="auth-links">
                 @auth
+                    <!-- Tombol Akun Saya -->
+                    <a href="/akun" class="btn-login" style="background: transparent; color: white !important; border: 1px solid white;">Akun Saya</a>
+
                     <a href="#" class="btn-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         Logout ({{ auth()->user()->name }})
                     </a>

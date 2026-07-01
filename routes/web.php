@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ProfileController;
 
 /**
  * Product Showcase Routes
@@ -80,3 +81,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/checkout/{id}', [CheckoutController::class, 'index']);
     Route::post('/checkout/{id}/complete', [CheckoutController::class, 'complete'])->name('checkout.complete');
 });
+
+Route::get('/akun', [ProfileController::class, 'index'])->name('akun');
