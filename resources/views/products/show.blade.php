@@ -437,6 +437,20 @@
             border-color: #999;
             color: #333;
         }
+        .btn-akun {
+            background: transparent;
+            color: #C19A6B;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .btn-akun:hover {
+        opacity: 0.8;
+        }
         /* -------------------------------------
            4. RESPONSIVE MOBILE
            ------------------------------------- */
@@ -516,16 +530,18 @@
                 <a href="/category/3">Boots</a>
             </div>
 
-            <div class="auth-links">
+           <div class="auth-links">
                 @auth
-                    <a href="#" class="btn-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        Logout ({{ auth()->user()->name }})
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
+                <a href="{{ route('akun') }}" class="btn-akun">Akun Saya</a>
+
+                <a href="#" class="btn-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Logout ({{ auth()->user()->name }})
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
                 @else
-                    <a href="/login" class="btn-login">Masuk / Daftar</a>
+                <a href="/login" class="btn-login">Masuk / Daftar</a>
                 @endauth
             </div>
         </div>

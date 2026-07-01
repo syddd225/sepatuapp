@@ -132,6 +132,20 @@
             border-radius: 2px;
             transition: 0.3s;
         }
+       .btn-akun {
+            background: transparent;
+            color: #C19A6B;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .btn-akun:hover {
+        opacity: 0.8;
+        }
 
         /* HERO */
         .hero {
@@ -488,24 +502,23 @@
         <div class="nav-wrapper" id="nav-wrapper">
             <div class="nav-links">
                 <a href="/">Home</a>
-                <a href="#kategori">Kategori</a>
-                <a href="#tentang-kami">Tentang Kami</a>
-                <a href="#kontak">Kontak</a>
+                <a href="/#kategori">Kategori</a>
+                <a href="/#tentang-kami">Tentang Kami</a>
+                <a href="/#kontak">Kontak</a>
             </div>
 
             <div class="auth-links">
                 @auth
-                    <!-- Tombol Akun Saya -->
-                    <a href="/akun" class="btn-login" style="background: transparent; color: white !important; border: 1px solid white;">Akun Saya</a>
+                <a href="{{ route('akun') }}" class="btn-akun">Akun Saya</a>
 
-                    <a href="#" class="btn-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        Logout ({{ auth()->user()->name }})
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
+                <a href="#" class="btn-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Logout ({{ auth()->user()->name }})
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
                 @else
-                    <a href="/login" class="btn-login">Masuk / Daftar</a>
+                <a href="/login" class="btn-login">Masuk / Daftar</a>
                 @endauth
             </div>
         </div>

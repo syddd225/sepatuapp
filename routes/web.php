@@ -79,7 +79,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
  */
 Route::middleware(['auth'])->group(function () {
     Route::get('/checkout/{id}', [CheckoutController::class, 'index']);
-    Route::post('/checkout/{id}/complete', [CheckoutController::class, 'complete'])->name('checkout.complete');
+    Route::post('/checkout/{id}/complete',[CheckoutController::class, 'complete' ])->name('checkout.complete');
+    Route::get('/akun', [ProfileController::class, 'index'])->name('akun');
+    Route::post('/akun/update', [ProfileController::class, 'update'])->name('akun.update');
 });
-
-Route::get('/akun', [ProfileController::class, 'index'])->name('akun');

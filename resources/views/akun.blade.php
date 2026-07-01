@@ -112,19 +112,107 @@
             border-radius: 8px;
             border: 1px solid #eee;
         }
+        
+        .btn-akun {
+            background: transparent;
+            color: #C19A6B;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+            display: inline-block;
+         }
 
-        /* --- FOOTER CSS --- */
-        .footer-complex { background-color: #050505; color: #ccc; padding: 70px 40px 30px; font-family: 'Inter', sans-serif; width: 100%; }
-        .footer-grid { display: grid; grid-template-columns: 2.5fr 1fr 1.2fr 1.8fr 1.5fr; gap: 30px; max-width: 1200px; margin: 0 auto; }
-        .footer-col h4 { color: #fff; font-size: 16px; margin-bottom: 25px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        .footer-col p { font-size: 14px; line-height: 1.8; margin-bottom: 15px; color: #aaa; text-align: justify; }
-        .footer-col a { color: #aaa; text-decoration: none; font-size: 14px; display: block; margin-bottom: 15px; transition: 0.3s; }
-        .footer-col a:hover { color: #C19A6B; }
-        .work-hours { width: 100%; font-size: 14px; border-collapse: collapse; }
-        .work-hours td { padding: 10px 0; border-bottom: 1px solid #222; color: #aaa; }
-        .work-hours tr:last-child td { border-bottom: none; }
-        .work-hours td:last-child { text-align: right; color: #fff; font-weight: 600; }
-        .footer-bottom { text-align: center; padding-top: 30px; margin-top: 50px; border-top: 1px solid #222; font-size: 13px; color: #666; }
+        .btn-akun:hover {
+            opacity:0.8;
+        }
+
+
+         .footer-complex {
+            background-color: #050505; 
+            color: #ccc;
+            padding: 70px 40px 30px;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns:  1.5fr 1fr 1.2fr 1.8fr 1.5fr; 
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-col h4 {
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-col p {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #aaa;
+            text-align: justify;
+        }
+
+        .footer-col a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: #C19A6B; 
+        }
+
+        .footer-col .read-more {
+            color: #C19A6B;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .work-hours {
+            width: 100%;
+            font-size: 14px;
+            border-collapse: collapse;
+        }
+
+        .work-hours td {
+            padding: 10px 0;
+            border-bottom: 1px solid #222;
+            color: #aaa;
+        }
+
+        .work-hours tr:last-child td {
+            border-bottom: none;
+        }
+
+        .work-hours td:last-child {
+            text-align: right;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 50px;
+            border-top: 1px solid #222;
+            font-size: 13px;
+            color: #666;
+        }
+
     </style>
 </head>
 
@@ -136,17 +224,15 @@
         <div class="nav-wrapper">
             <div class="nav-links">
                 <a href="/">Home</a>
-                <a href="/category/1">Formal</a>
-                <a href="/category/2">Casual</a>
-                <a href="/category/3">Boots</a>
+                <a href="/#kategori">Kategori</a>
+                <a href="/#tentang-kami">Tentang Kami</a>
+                <a href="/#kontak">Kontak</a>
             </div>
             <div class="auth-links">
                 @auth
-                    <!-- Tombol Akun Saya -->
-                    <a href="/akun" class="btn-login" style="background: transparent; color: white !important; border: 1px solid white;">Akun Saya</a>
-                    
+                    <a href="{{ route('akun') }}" class="btn-akun">Akun Saya</a>
                     <a href="#" class="btn-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        Logout
+                        Logout ({{ auth()->user()->name }})
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
@@ -157,6 +243,7 @@
             </div>
         </div>
     </div>
+    
 
     <!-- PROFILE SECTION -->
     <div class="profile-container">
@@ -197,42 +284,72 @@
         </div>
     </div>
 
-    <!-- FOOTER BARU (5 KOLOM) -->
-    <div class="footer-complex">
+   <div class="footer-complex" id="kontak">
         <div class="footer-grid">
+
             <div class="footer-col">
                 <h4>Tentang Kami</h4>
                 <p>Retro Collection didirikan dengan visi untuk menghadirkan mahakarya sepatu berkualitas dari pengrajin lokal Nusantara yang dapat dijangkau oleh seluruh lapisan masyarakat.</p>
+                <a href="/#tentang-kami" class="read-more">Baca selengkapnya</a>
             </div>
+
             <div class="footer-col">
                 <h4>Menu</h4>
                 <a href="/">Home</a>
+                <a href="/#tentang-kami">Tentang Kami</a>
                 <a href="/#kategori">Produk Kami</a>
-            </div>
+                </div>
+
             <div class="footer-col">
                 <h4>Kontak Kami</h4>
                 <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <a href="#" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">💬 WhatsApp</a>
-                    <a href="#" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">✉️ Email</a>
+                    <a href="https://wa.me/62895321683364" target="_blank" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">
+                        <span style="font-size: 18px;">📲</span> WhatsApp
+                    </a>
+                    <a href="mailto:rasyadachmad17@gmail.com" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">
+                        <span style="font-size: 18px;">✉️</span> Email
+                    </a>
+                    <a href="#" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0;">
+                        <span style="font-size: 18px;">📸</span> Instagram
+                    </a>
                 </div>
             </div>
+
             <div class="footer-col">
                 <h4>Alamat Kantor</h4>
-                <p style="margin: 0; text-align: left;">📍 Jl. Dr. Radjiman No. 88, Laweyan, Kota Surakarta, Jawa Tengah, 57141</p>
+                <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <span style="font-size: 18px;">📍</span>
+                    <p style="margin: 0;">
+                        Jl. Dr. Radjiman No. 88,<br>
+                        Laweyan, Kota Surakarta,<br>
+                        Jawa Tengah, 57141
+                    </p>
+                </div>
             </div>
+
             <div class="footer-col">
                 <h4>Jam Kerja</h4>
+                <p>Dukungan kami tersedia untuk membantu Anda 24 jam sehari, tujuh hari seminggu.</p>
                 <table class="work-hours">
-                    <tr><td>Senin - Jumat</td><td>08:00 - 17:00</td></tr>
-                    <tr><td>Sabtu</td><td>08:00 - 15:00</td></tr>
-                    <tr><td>Minggu</td><td style="color: #666; font-weight: normal;">Libur</td></tr>
+                    <tr>
+                        <td>Senin - Jumat</td>
+                        <td>08:00 AM - 05:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Sabtu</td>
+                        <td>08:00 AM - 03:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Minggu</td>
+                        <td style="color: #666; font-weight: normal;">Libur</td>
+                    </tr>
                 </table>
             </div>
+
         </div>
         <div class="footer-bottom">
             &copy; 2026 Retro Collection. All rights reserved.
         </div>
     </div>
-
 </body>
 </html>
